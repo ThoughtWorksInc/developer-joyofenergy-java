@@ -7,25 +7,26 @@ import java.util.HashMap;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.tw.energy.repository.MeterReadingRepository;
 
-public class MeterReadingServiceTest {
+public class MeterReadingRepositoryTest {
 
-  private MeterReadingService meterReadingService;
+  private MeterReadingRepository meterReadingRepository;
 
   @BeforeEach
   public void setUp() {
-    meterReadingService = new MeterReadingService(new HashMap<>());
+    meterReadingRepository = new MeterReadingRepository(new HashMap<>());
   }
 
   @Test
   public void givenMeterIdThatDoesNotExistShouldReturnNull() {
-    assertThat(meterReadingService.getReadings("unknown-id")).isEqualTo(Optional.empty());
+    assertThat(meterReadingRepository.getReadings("unknown-id")).isEqualTo(Optional.empty());
   }
 
   @Test
   public void givenMeterReadingThatExistsShouldReturnMeterReadings() {
-    meterReadingService.storeReadings("random-id", new ArrayList<>());
-    assertThat(meterReadingService.getReadings("random-id"))
+    meterReadingRepository.storeReadings("random-id", new ArrayList<>());
+    assertThat(meterReadingRepository.getReadings("random-id"))
         .isEqualTo(Optional.of(new ArrayList<>()));
   }
 }

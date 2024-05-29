@@ -14,8 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.PricePlan;
-import uk.tw.energy.service.AccountService;
-import uk.tw.energy.service.MeterReadingService;
+import uk.tw.energy.repository.AccountRepository;
+import uk.tw.energy.repository.MeterReadingRepository;
 import uk.tw.energy.service.PricePlanService;
 
 public class PricePlanComparatorControllerTest {
@@ -24,22 +24,22 @@ public class PricePlanComparatorControllerTest {
   private static final String SECOND_BEST_PLAN_ID = "second-best-supplier";
   private static final String SMART_METER_ID = "smart-meter-id";
   private PricePlanComparatorController controller;
-  private MeterReadingService meterReadingService;
-  private AccountService accountService;
+  private MeterReadingRepository meterReadingRepository;
+  private AccountRepository accountRepository;
 
   @BeforeEach
   public void setUp() {
-    meterReadingService = new MeterReadingService(new HashMap<>());
+    meterReadingRepository = new MeterReadingRepository(new HashMap<>());
 
     PricePlan pricePlan1 = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN, null);
     PricePlan pricePlan2 = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE, null);
     PricePlan pricePlan3 = new PricePlan(SECOND_BEST_PLAN_ID, null, BigDecimal.valueOf(2), null);
     List<PricePlan> pricePlans = List.of(pricePlan1, pricePlan2, pricePlan3);
-    PricePlanService pricePlanService = new PricePlanService(pricePlans, meterReadingService);
+    PricePlanService pricePlanService = new PricePlanService(pricePlans, meterReadingRepository);
 
-    accountService = new AccountService(Map.of(SMART_METER_ID, WORST_PLAN_ID));
+    accountRepository = new AccountRepository(Map.of(SMART_METER_ID, WORST_PLAN_ID));
 
-    controller = new PricePlanComparatorController(pricePlanService, accountService);
+    controller = new PricePlanComparatorController(pricePlanService, accountRepository);
   }
 
   @Test
@@ -47,7 +47,7 @@ public class PricePlanComparatorControllerTest {
     var electricityReading =
         new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(15.0));
     var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(5.0));
-    meterReadingService.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
+    meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
 
     ResponseEntity<Map<String, Object>> response =
         controller.calculatedCostForEachPricePlan(SMART_METER_ID);
@@ -78,7 +78,7 @@ public class PricePlanComparatorControllerTest {
     var electricityReading =
         new ElectricityReading(Instant.now().minusSeconds(1800), BigDecimal.valueOf(35.0));
     var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(3.0));
-    meterReadingService.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
+    meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
 
     ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
         controller.recommendCheapestPricePlans(SMART_METER_ID, null);
@@ -97,7 +97,7 @@ public class PricePlanComparatorControllerTest {
     var electricityReading =
         new ElectricityReading(Instant.now().minusSeconds(2700), BigDecimal.valueOf(5.0));
     var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(20.0));
-    meterReadingService.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
+    meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
 
     ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
         controller.recommendCheapestPricePlans(SMART_METER_ID, 2);
@@ -114,7 +114,7 @@ public class PricePlanComparatorControllerTest {
     var reading0 =
         new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(25.0));
     var reading1 = new ElectricityReading(Instant.now(), BigDecimal.valueOf(3.0));
-    meterReadingService.storeReadings(SMART_METER_ID, List.of(reading0, reading1));
+    meterReadingRepository.storeReadings(SMART_METER_ID, List.of(reading0, reading1));
 
     ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
         controller.recommendCheapestPricePlans(SMART_METER_ID, 5);

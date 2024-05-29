@@ -1,4 +1,4 @@
-package uk.tw.energy.service;
+package uk.tw.energy.repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import uk.tw.energy.domain.ElectricityReading;
 
 @Service
-public class MeterReadingService {
+public class MeterReadingRepository {
 
   private final Map<String, List<ElectricityReading>> meterAssociatedReadings;
 
-  public MeterReadingService(Map<String, List<ElectricityReading>> meterAssociatedReadings) {
+  public MeterReadingRepository(Map<String, List<ElectricityReading>> meterAssociatedReadings) {
     this.meterAssociatedReadings = meterAssociatedReadings;
   }
 

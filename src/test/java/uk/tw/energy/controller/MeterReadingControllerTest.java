@@ -12,18 +12,18 @@ import org.springframework.http.HttpStatus;
 import uk.tw.energy.builders.MeterReadingsBuilder;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.MeterReadings;
-import uk.tw.energy.service.MeterReadingService;
+import uk.tw.energy.repository.MeterReadingRepository;
 
 public class MeterReadingControllerTest {
 
   private static final String SMART_METER_ID = "10101010";
   private MeterReadingController meterReadingController;
-  private MeterReadingService meterReadingService;
+  private MeterReadingRepository meterReadingRepository;
 
   @BeforeEach
   public void setUp() {
-    this.meterReadingService = new MeterReadingService(new HashMap<>());
-    this.meterReadingController = new MeterReadingController(meterReadingService);
+    this.meterReadingRepository = new MeterReadingRepository(new HashMap<>());
+    this.meterReadingController = new MeterReadingController(meterReadingRepository);
   }
 
   @Test
@@ -68,7 +68,7 @@ public class MeterReadingControllerTest {
     expectedElectricityReadings.addAll(meterReadings.electricityReadings());
     expectedElectricityReadings.addAll(otherMeterReadings.electricityReadings());
 
-    assertThat(meterReadingService.getReadings(SMART_METER_ID).get())
+    assertThat(meterReadingRepository.getReadings(SMART_METER_ID).get())
         .isEqualTo(expectedElectricityReadings);
   }
 
@@ -86,7 +86,7 @@ public class MeterReadingControllerTest {
     meterReadingController.storeReadings(meterReadings);
     meterReadingController.storeReadings(otherMeterReadings);
 
-    assertThat(meterReadingService.getReadings(SMART_METER_ID).get())
+    assertThat(meterReadingRepository.getReadings(SMART_METER_ID).get())
         .isEqualTo(meterReadings.electricityReadings());
   }
 
