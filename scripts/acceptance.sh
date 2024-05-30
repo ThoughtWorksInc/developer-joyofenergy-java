@@ -2,7 +2,7 @@
 #
 # Execute basic checks on the application
 #
-# If the test breaks unexpectedly, you will find the the server log 
+# If the test breaks unexpectedly, you will find the the server log
 # and the temp files used in the assertion in the directory "$tmp_dir"
 #
 
@@ -31,7 +31,7 @@ assert_json() {
     exit $?
   }
   diff "$tmp_dir/expected.json" "$tmp_dir/actual.json" || {
-    fail "Differences found in $command"    
+    fail "Differences found in $command"
   }
 }
 
@@ -120,7 +120,7 @@ payload='
 }
 '
 
-$curl -d "$payload" -H "Content-Type: application/json" $base_url/readings/store || {
+$curl -d "$payload" -H "Content-Type: application/json" $base_url/readings || {
   fail "could not store readings"
 }
 
@@ -159,9 +159,9 @@ echo "OK reading data"
 expected='
 {
   "pricePlanComparisons": {
-    "price-plan-2": 6.0,
-    "price-plan-1": 12.0,
-    "price-plan-0": 60.0
+    "price-plan-2": 0.3,
+    "price-plan-1": 0.6,
+    "price-plan-0": 3.0
   },
   "pricePlanId": null
 }'
@@ -175,10 +175,10 @@ echo "OK comparing all price plans"
 
 expected='[
   {
-    "price-plan-2": 6.0
+    "price-plan-2": 0.3
   },
   {
-    "price-plan-1": 12.0
+    "price-plan-1": 0.6
   }
 ]'
 
