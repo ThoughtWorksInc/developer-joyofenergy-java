@@ -3,13 +3,12 @@ package tw.joi.energy.domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.lang.Nullable;
 
 public class SmartMeter {
     private final PricePlan pricePlan;
     private final List<ElectricityReading> electricityReadings;
 
-    public SmartMeter(@Nullable PricePlan pricePlan, List<ElectricityReading> electricityReadings) {
+    public SmartMeter(PricePlan pricePlan, List<ElectricityReading> electricityReadings) {
         this.pricePlan = pricePlan;
         this.electricityReadings = new ArrayList<>(electricityReadings);
     }
@@ -22,7 +21,7 @@ public class SmartMeter {
         this.electricityReadings.addAll(electricityReadings);
     }
 
-    @Nullable public String getSmartMeterId() {
+    public String getSmartMeterId() {
         if (null == pricePlan) {
             return null;
         }
