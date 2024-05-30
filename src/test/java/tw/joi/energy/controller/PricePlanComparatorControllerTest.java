@@ -5,7 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
-import tw.joi.energy.repository.AccountRepository;
-import tw.joi.energy.repository.MeterReadingRepository;
+import tw.joi.energy.domain.SmartMeter;
+import tw.joi.energy.repository.SmartMeterRepository;
 import tw.joi.energy.service.PricePlanService;
 
 public class PricePlanComparatorControllerTest {
@@ -24,29 +23,28 @@ public class PricePlanComparatorControllerTest {
     private static final String SECOND_BEST_PLAN_ID = "second-best-supplier";
     private static final String SMART_METER_ID = "smart-meter-id";
     private PricePlanComparatorController controller;
-    private MeterReadingRepository meterReadingRepository;
-    private AccountRepository accountRepository;
+    private SmartMeterRepository smartMeterRepository;
+    private PricePlan WORST_PLAN;
 
     @BeforeEach
     public void setUp() {
-        meterReadingRepository = new MeterReadingRepository(new HashMap<>());
-
-        PricePlan pricePlan1 = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN);
+        WORST_PLAN = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN);
         PricePlan pricePlan2 = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE);
         PricePlan pricePlan3 = new PricePlan(SECOND_BEST_PLAN_ID, null, BigDecimal.valueOf(2));
-        List<PricePlan> pricePlans = List.of(pricePlan1, pricePlan2, pricePlan3);
-        PricePlanService pricePlanService = new PricePlanService(pricePlans, meterReadingRepository);
+        List<PricePlan> pricePlans = List.of(WORST_PLAN, pricePlan2, pricePlan3);
+        PricePlanService pricePlanService = new PricePlanService(pricePlans);
 
-        accountRepository = new AccountRepository(Map.of(SMART_METER_ID, WORST_PLAN_ID));
-
-        controller = new PricePlanComparatorController(pricePlanService, accountRepository);
+        smartMeterRepository = new SmartMeterRepository();
+        controller = new PricePlanComparatorController(pricePlanService, smartMeterRepository);
     }
 
     @Test
     public void calculatedCostForEachPricePlan_happyPath() {
-        var electricityReading = new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(5.0));
-        var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(15.0));
-        meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
+        List<ElectricityReading> readings = List.of(
+                new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(5.0)),
+                new ElectricityReading(Instant.now(), BigDecimal.valueOf(15.0)));
+        var smartMeter = new SmartMeter(WORST_PLAN, readings);
+        smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
         ResponseEntity<Map<String, Object>> response = controller.calculatedCostForEachPricePlan(SMART_METER_ID);
 
@@ -71,9 +69,11 @@ public class PricePlanComparatorControllerTest {
 
     @Test
     public void recommendCheapestPricePlans_noLimit() {
-        var electricityReading = new ElectricityReading(Instant.now().minusSeconds(1800), BigDecimal.valueOf(3.0));
-        var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(35.0));
-        meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
+        var readings = List.of(
+                new ElectricityReading(Instant.now().minusSeconds(1800), BigDecimal.valueOf(3.0)),
+                new ElectricityReading(Instant.now(), BigDecimal.valueOf(35.0)));
+        var smartMeter = new SmartMeter(WORST_PLAN, readings);
+        smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
         ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
                 controller.recommendCheapestPricePlans(SMART_METER_ID, null);
@@ -88,9 +88,11 @@ public class PricePlanComparatorControllerTest {
 
     @Test
     public void recommendCheapestPricePlans_withLimit() {
-        var electricityReading = new ElectricityReading(Instant.now().minusSeconds(2700), BigDecimal.valueOf(5.0));
-        var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(20.0));
-        meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
+        var readings = List.of(
+                new ElectricityReading(Instant.now().minusSeconds(2700), BigDecimal.valueOf(5.0)),
+                new ElectricityReading(Instant.now(), BigDecimal.valueOf(20.0)));
+        var smartMeter = new SmartMeter(WORST_PLAN, readings);
+        smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
         ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
                 controller.recommendCheapestPricePlans(SMART_METER_ID, 2);
@@ -103,9 +105,11 @@ public class PricePlanComparatorControllerTest {
 
     @Test
     public void recommendCheapestPricePlans_limitHigherThanNumberOfEntries() {
-        var reading0 = new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(3.0));
-        var reading1 = new ElectricityReading(Instant.now(), BigDecimal.valueOf(25.0));
-        meterReadingRepository.storeReadings(SMART_METER_ID, List.of(reading0, reading1));
+        var readings = List.of(
+                new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(3.0)),
+                new ElectricityReading(Instant.now(), BigDecimal.valueOf(25.0)));
+        var smartMeter = new SmartMeter(WORST_PLAN, readings);
+        smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
         ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
                 controller.recommendCheapestPricePlans(SMART_METER_ID, 5);
