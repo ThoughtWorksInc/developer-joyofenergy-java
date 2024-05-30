@@ -16,15 +16,12 @@ import tw.joi.energy.service.PricePlanService;
 @Configuration
 public class SeedingApplicationDataConfiguration {
 
-    private static final String MOST_EVIL_PRICE_PLAN_ID = "price-plan-0";
-    private static final String RENEWABLES_PRICE_PLAN_ID = "price-plan-1";
-    private static final String STANDARD_PRICE_PLAN_ID = "price-plan-2";
     private static final PricePlan MOST_EVIL_PRICE_PLAN =
-            new PricePlan(MOST_EVIL_PRICE_PLAN_ID, "Dr Evil's Dark Energy", BigDecimal.TEN);
+            new PricePlan("price-plan-0", "Dr Evil's Dark Energy", BigDecimal.TEN);
     private static final PricePlan RENEWABLES_PRICE_PLAN =
-            new PricePlan(RENEWABLES_PRICE_PLAN_ID, "The Green Eco", BigDecimal.valueOf(2));
+            new PricePlan("price-plan-1", "The Green Eco", BigDecimal.valueOf(2));
     private static final PricePlan STANDARD_PRICE_PLAN =
-            new PricePlan(STANDARD_PRICE_PLAN_ID, "Power for Everyone", BigDecimal.ONE);
+            new PricePlan("price-plan-2", "Power for Everyone", BigDecimal.ONE);
 
     @Bean
     public SmartMeterRepository smartMeterRepository() {
