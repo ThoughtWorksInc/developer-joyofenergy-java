@@ -2,9 +2,9 @@ package tw.joi.energy.builders;
 
 import java.util.ArrayList;
 import java.util.List;
+import tw.joi.energy.config.ElectricityReadingsGenerator;
 import tw.joi.energy.controller.StoreReadingsRequest;
 import tw.joi.energy.domain.ElectricityReading;
-import tw.joi.energy.generator.ElectricityReadingsGenerator;
 
 public class StoreReadingsRequestBuilder {
 

@@ -1,4 +1,4 @@
-package tw.joi.energy;
+package tw.joi.energy.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
-import tw.joi.energy.generator.ElectricityReadingsGenerator;
 
 @Configuration
 public class SeedingApplicationDataConfiguration {

@@ -1,4 +1,4 @@
-package tw.joi.energy.generator;
+package tw.joi.energy.config;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
