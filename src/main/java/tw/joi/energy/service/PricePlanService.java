@@ -1,8 +1,6 @@
 package tw.joi.energy.service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.Duration;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -16,36 +14,35 @@ import tw.joi.energy.repository.MeterReadingRepository;
 @Service
 public class PricePlanService {
 
-  private final List<PricePlan> pricePlans;
-  private final MeterReadingRepository meterReadingRepository;
+    private final List<PricePlan> pricePlans;
+    private final MeterReadingRepository meterReadingRepository;
 
-  public PricePlanService(List<PricePlan> pricePlans, MeterReadingRepository meterReadingRepository) {
-    this.pricePlans = pricePlans;
-    this.meterReadingRepository = meterReadingRepository;
-  }
-
-  public Optional<Map<String, BigDecimal>> getConsumptionCostOfElectricityReadingsForEachPricePlan(
-      String smartMeterId) {
-    var electricityReadings =  meterReadingRepository.getReadings(smartMeterId);
-
-    if (!electricityReadings.isPresent()) {
-      return Optional.empty();
+    public PricePlanService(List<PricePlan> pricePlans, MeterReadingRepository meterReadingRepository) {
+        this.pricePlans = pricePlans;
+        this.meterReadingRepository = meterReadingRepository;
     }
 
-    return Optional.of(
-        pricePlans.stream()
-            .collect(
-                Collectors.toMap(
-                    PricePlan::getPlanName, t -> calculateCost(electricityReadings.get(), t))));
-  }
+    public Optional<Map<String, BigDecimal>> getConsumptionCostOfElectricityReadingsForEachPricePlan(
+            String smartMeterId) {
+        var electricityReadings = meterReadingRepository.getReadings(smartMeterId);
 
-  private BigDecimal calculateCost(
-      List<ElectricityReading> electricityReadings, PricePlan pricePlan) {
-    var oldest = electricityReadings.stream().min(Comparator.comparing(ElectricityReading::time)).get();
-    var latest = electricityReadings.stream().max(Comparator.comparing(ElectricityReading::time)).get();
+        if (!electricityReadings.isPresent()) {
+            return Optional.empty();
+        }
 
-    BigDecimal energyConsumed = latest.reading().subtract(oldest.reading());
-    return energyConsumed.multiply(pricePlan.getUnitRate());
-  }
+        return Optional.of(pricePlans.stream()
+                .collect(Collectors.toMap(PricePlan::getPlanName, t -> calculateCost(electricityReadings.get(), t))));
+    }
 
+    private BigDecimal calculateCost(List<ElectricityReading> electricityReadings, PricePlan pricePlan) {
+        var oldest = electricityReadings.stream()
+                .min(Comparator.comparing(ElectricityReading::time))
+                .get();
+        var latest = electricityReadings.stream()
+                .max(Comparator.comparing(ElectricityReading::time))
+                .get();
+
+        BigDecimal energyConsumed = latest.reading().subtract(oldest.reading());
+        return energyConsumed.multiply(pricePlan.getUnitRate());
+    }
 }

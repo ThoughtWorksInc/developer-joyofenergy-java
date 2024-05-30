@@ -17,27 +17,26 @@ import tw.joi.energy.repository.MeterReadingRepository;
 @RequestMapping("/readings")
 public class MeterReadingController {
 
-  private final MeterReadingRepository meterReadingRepository;
+    private final MeterReadingRepository meterReadingRepository;
 
-  public MeterReadingController(MeterReadingRepository meterReadingRepository) {
-    this.meterReadingRepository = meterReadingRepository;
-  }
-
-  @PostMapping()
-  public ResponseEntity<?> storeReadings(@RequestBody StoreReadingsRequest meterReadings) {
-    if (!meterReadings.isValid()) {
-      return ResponseEntity.internalServerError().build();
+    public MeterReadingController(MeterReadingRepository meterReadingRepository) {
+        this.meterReadingRepository = meterReadingRepository;
     }
-    meterReadingRepository.storeReadings(
-        meterReadings.smartMeterId(), meterReadings.electricityReadings());
-    return ResponseEntity.ok().build();
-  }
 
-  @GetMapping("/read/{smartMeterId}")
-  public ResponseEntity readReadings(@PathVariable String smartMeterId) {
-    Optional<List<ElectricityReading>> readings = meterReadingRepository.getReadings(smartMeterId);
-    return readings.isPresent()
-        ? ResponseEntity.ok(readings.get())
-        : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-  }
+    @PostMapping()
+    public ResponseEntity<?> storeReadings(@RequestBody StoreReadingsRequest meterReadings) {
+        if (!meterReadings.isValid()) {
+            return ResponseEntity.internalServerError().build();
+        }
+        meterReadingRepository.storeReadings(meterReadings.smartMeterId(), meterReadings.electricityReadings());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/read/{smartMeterId}")
+    public ResponseEntity readReadings(@PathVariable String smartMeterId) {
+        Optional<List<ElectricityReading>> readings = meterReadingRepository.getReadings(smartMeterId);
+        return readings.isPresent()
+                ? ResponseEntity.ok(readings.get())
+                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 }
