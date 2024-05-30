@@ -1,7 +1,7 @@
 # Welcome to PowerDale
 
 PowerDale is a small town with around 100 residents. Most houses have a smart meter installed that can save and send
-information about how much power a house is drawing/using.
+information about how much power a house has consumed.
 
 There are three major providers of energy in town that charge different amounts for the power they supply.
 
@@ -15,30 +15,10 @@ JOI Energy is a new start-up in the energy industry. Rather than selling energy 
 from the market by recording their customers' energy usage from their smart meters and recommending the best supplier to
 meet their needs.
 
-You have been placed into their development team, whose current goal is to produce an API which their customers and
-smart meters will interact with.
+This codebase is for an API which their customers and smart meters will interact with.
 
-Unfortunately, two members of the team are on annual leave, and another one has called in sick! You are left with
-another ThoughtWorker to progress with the current user stories on the story wall. This is your chance to make an impact
-on the business, improve the code base and deliver value.
-
-## Story Wall
-
-At JOI energy the development team use a story wall or Kanban board to keep track of features or "stories" as they are
-worked on.
-
-The wall you will be working from today has 7 columns:
-
-- Backlog
-- Ready for Dev
-- In Dev
-- Ready for Testing
-- In Testing
-- Ready for sign off
-- Done
-
-Examples can be found
-here [https://leankit.com/learn/kanban/kanban-board/](https://leankit.com/learn/kanban/kanban-board/)
+Unfortunately, as the codebase has evolved, it has gathered a number of code smells and questionable design decisions. 
+Our goal with this exercise would be to deliver value by implementing a new feature, while at the same time improving the codebase by refactoring away any code smells we identify.
 
 ## Users
 
@@ -60,13 +40,9 @@ These values are used in the code and in the following examples too.
 The project requires [Java 21](https://adoptium.net/en-GB/) or
 higher.
 
-The project makes use of Gradle and uses
-the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html), which means you don't need Gradle
-installed.
-
 ## Useful Gradle commands
 
-The project makes use of Gradle and uses the Gradle wrapper to help you out carrying some common tasks such as building
+The project makes use of Gradle and uses the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) to help you out carrying some common tasks such as building
 the project or running it.
 
 ### List all Gradle tasks
@@ -160,20 +136,16 @@ Parameters
 
 Example readings
 
-| Date (`GMT`)      | Epoch timestamp | Reading (`kW`) |
-| ----------------- | --------------: | -------------: |
-| `2020-11-29 8:00` |      1606636800 |         0.0503 |
-| `2020-11-29 8:01` |      1606636860 |         0.0621 |
-| `2020-11-29 8:02` |      1606636920 |         0.0222 |
-| `2020-11-29 8:03` |      1606636980 |         0.0423 |
-| `2020-11-29 8:04` |      1606637040 |         0.0191 |
+| Date (`GMT`)      | Epoch timestamp | Reading (`kWh`) |
+|-------------------| --------------: |----------------:|
+| `2020-11-29 8:00` |      1606636800 |          0.0503 |
+| `2020-11-29 9:00` |      1606636860 |          0.0621 |
+| `2020-11-30 7:30` |      1606636920 |          0.0922 |
+| `2020-11-31 8:30` |      1606636980 |          0.1223 |
+| `2020-11-31 8:00` |      1606637040 |          0.1391 |
 
-In the above example, the smart meter sampled readings, in `kW`, every minute. Note that the reading is in `kW` and
-not `kWH`, which means that each reading represents the consumption at the reading time. If no power is being consumed
-at the time of reading, then the reading value will be `0`. Given that `0` may introduce new challenges, we can assume
-that there is always some consumption, and we will never have a `0` reading value. These readings are then sent by the
-smart meter to the application using REST. There is a service in the application that calculates the `kWH` from these
-readings.
+In the above example, the smart meter periodically sampled readings, in `kWh`, over multiple days. Note that since the smart meter is reporting the total consumption at that point in time, the reading value will either be higher or the same as the previous reading. These readings are then sent by the
+smart meter to the application using the provided REST API. 
 
 The following POST request, is an example request using CURL, sends the readings shown in the table above.
 
@@ -192,7 +164,7 @@ The above command does not return anything.
 Endpoint
 
 ```text
-GET /readings/read/<smartMeterId>
+GET /readings/<smartMeterId>
 ```
 
 Parameters
