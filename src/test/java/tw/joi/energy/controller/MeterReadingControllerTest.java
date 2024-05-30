@@ -15,8 +15,7 @@ public class MeterReadingControllerTest {
 
     private static final String SMART_METER_ID = "10101010";
     private final SmartMeterRepository smartMeterRepository = new SmartMeterRepository();
-    private final MeterReadingController meterReadingController =
-            new MeterReadingController(null, smartMeterRepository);
+    private final MeterReadingController meterReadingController = new MeterReadingController(smartMeterRepository);
 
     @Test
     public void givenNoMeterIdIsSuppliedWhenStoringShouldReturnErrorResponse() {

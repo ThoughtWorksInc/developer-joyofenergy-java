@@ -10,19 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tw.joi.energy.domain.SmartMeter;
-import tw.joi.energy.repository.MeterReadingRepository;
 import tw.joi.energy.repository.SmartMeterRepository;
 
 @RestController
 @RequestMapping("/readings")
 public class MeterReadingController {
-
-    private final MeterReadingRepository meterReadingRepository;
     private final SmartMeterRepository smartMeterRepository;
 
-    public MeterReadingController(
-            MeterReadingRepository meterReadingRepository, SmartMeterRepository smartMeterRepository) {
-        this.meterReadingRepository = meterReadingRepository;
+    public MeterReadingController(SmartMeterRepository smartMeterRepository) {
         this.smartMeterRepository = smartMeterRepository;
     }
 
