@@ -1,4 +1,4 @@
-package tw.joi.energy.service;
+package tw.joi.energy.repository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
