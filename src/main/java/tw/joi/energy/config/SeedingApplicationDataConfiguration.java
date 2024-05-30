@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
+import tw.joi.energy.repository.SmartMeterRepository;
 
 @Configuration
 public class SeedingApplicationDataConfiguration {
@@ -20,6 +21,13 @@ public class SeedingApplicationDataConfiguration {
     private static final String MOST_EVIL_PRICE_PLAN_ID = "price-plan-0";
     private static final String RENEWABLES_PRICE_PLAN_ID = "price-plan-1";
     private static final String STANDARD_PRICE_PLAN_ID = "price-plan-2";
+
+    @Bean
+    public SmartMeterRepository smartMeterRepository() {
+        SmartMeterRepository smartMeterRepository = new SmartMeterRepository();
+
+        return smartMeterRepository;
+    }
 
     @Bean
     public List<PricePlan> pricePlans() {

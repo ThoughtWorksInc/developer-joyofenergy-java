@@ -4,26 +4,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import tw.joi.energy.builders.StoreReadingsRequestBuilder;
 import tw.joi.energy.domain.ElectricityReading;
-import tw.joi.energy.repository.MeterReadingRepository;
+import tw.joi.energy.repository.SmartMeterRepository;
 
 public class MeterReadingControllerTest {
 
     private static final String SMART_METER_ID = "10101010";
-    private MeterReadingController meterReadingController;
-    private MeterReadingRepository meterReadingRepository;
-
-    @BeforeEach
-    public void setUp() {
-        this.meterReadingRepository = new MeterReadingRepository(new HashMap<>());
-        this.meterReadingController = new MeterReadingController(meterReadingRepository);
-    }
+    private final SmartMeterRepository smartMeterRepository = new SmartMeterRepository();
+    private final MeterReadingController meterReadingController =
+            new MeterReadingController(null, smartMeterRepository);
 
     @Test
     public void givenNoMeterIdIsSuppliedWhenStoringShouldReturnErrorResponse() {
@@ -65,7 +58,8 @@ public class MeterReadingControllerTest {
         expectedElectricityReadings.addAll(meterReadings.electricityReadings());
         expectedElectricityReadings.addAll(otherMeterReadings.electricityReadings());
 
-        assertThat(meterReadingRepository.getReadings(SMART_METER_ID).get()).isEqualTo(expectedElectricityReadings);
+        assertThat(smartMeterRepository.findById(SMART_METER_ID).get().electricityReadings())
+                .isEqualTo(expectedElectricityReadings);
     }
 
     @Test
@@ -83,7 +77,7 @@ public class MeterReadingControllerTest {
         meterReadingController.storeReadings(meterReadings);
         meterReadingController.storeReadings(otherMeterReadings);
 
-        assertThat(meterReadingRepository.getReadings(SMART_METER_ID).get())
+        assertThat(smartMeterRepository.findById(SMART_METER_ID).get().electricityReadings())
                 .isEqualTo(meterReadings.electricityReadings());
     }
 
