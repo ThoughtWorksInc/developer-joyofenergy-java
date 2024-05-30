@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import uk.tw.energy.builders.MeterReadingsBuilder;
+import uk.tw.energy.builders.StoreReadingsRequestBuilder;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.MeterReadings;
 import uk.tw.energy.repository.MeterReadingRepository;
@@ -28,35 +28,35 @@ public class MeterReadingControllerTest {
 
   @Test
   public void givenNoMeterIdIsSuppliedWhenStoringShouldReturnErrorResponse() {
-    MeterReadings meterReadings = new MeterReadings(null, Collections.emptyList());
+    StoreReadingsRequest meterReadings = new StoreReadingsRequest(null, Collections.emptyList());
     assertThat(meterReadingController.storeReadings(meterReadings).getStatusCode())
         .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Test
   public void givenEmptyMeterReadingShouldReturnErrorResponse() {
-    MeterReadings meterReadings = new MeterReadings(SMART_METER_ID, Collections.emptyList());
+    StoreReadingsRequest meterReadings = new StoreReadingsRequest(SMART_METER_ID, Collections.emptyList());
     assertThat(meterReadingController.storeReadings(meterReadings).getStatusCode())
         .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Test
   public void givenNullReadingsAreSuppliedWhenStoringShouldReturnErrorResponse() {
-    MeterReadings meterReadings = new MeterReadings(SMART_METER_ID, null);
+    StoreReadingsRequest meterReadings = new StoreReadingsRequest(SMART_METER_ID, null);
     assertThat(meterReadingController.storeReadings(meterReadings).getStatusCode())
         .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Test
   public void givenMultipleBatchesOfMeterReadingsShouldStore() {
-    MeterReadings meterReadings =
-        new MeterReadingsBuilder()
+    StoreReadingsRequest meterReadings =
+        new StoreReadingsRequestBuilder()
             .setSmartMeterId(SMART_METER_ID)
             .generateElectricityReadings()
             .build();
 
-    MeterReadings otherMeterReadings =
-        new MeterReadingsBuilder()
+    StoreReadingsRequest otherMeterReadings =
+        new StoreReadingsRequestBuilder()
             .setSmartMeterId(SMART_METER_ID)
             .generateElectricityReadings()
             .build();
@@ -74,14 +74,14 @@ public class MeterReadingControllerTest {
 
   @Test
   public void givenMeterReadingsAssociatedWithTheUserShouldStoreAssociatedWithUser() {
-    MeterReadings meterReadings =
-        new MeterReadingsBuilder()
+    StoreReadingsRequest meterReadings =
+        new StoreReadingsRequestBuilder()
             .setSmartMeterId(SMART_METER_ID)
             .generateElectricityReadings()
             .build();
 
-    MeterReadings otherMeterReadings =
-        new MeterReadingsBuilder().setSmartMeterId("00001").generateElectricityReadings().build();
+    StoreReadingsRequest otherMeterReadings =
+        new StoreReadingsRequestBuilder().setSmartMeterId("00001").generateElectricityReadings().build();
 
     meterReadingController.storeReadings(meterReadings);
     meterReadingController.storeReadings(otherMeterReadings);

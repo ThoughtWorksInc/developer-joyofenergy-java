@@ -16,7 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import uk.tw.energy.builders.MeterReadingsBuilder;
+import uk.tw.energy.builders.StoreReadingsRequestBuilder;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.MeterReadings;
 
@@ -33,7 +33,7 @@ public class EndpointTest {
 
   @Test
   public void shouldStoreReadings() {
-    MeterReadings meterReadings = new MeterReadingsBuilder().generateElectricityReadings().build();
+    MeterReadings meterReadings = new StoreReadingsRequestBuilder().generateElectricityReadings().build();
     HttpEntity<MeterReadings> entity = toHttpEntity(meterReadings);
 
     ResponseEntity<String> response =
