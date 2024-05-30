@@ -14,15 +14,19 @@ public class ElectricityReadingsGenerator {
   public List<ElectricityReading> generate(int number) {
     List<ElectricityReading> readings = new ArrayList<>();
     Instant now = Instant.now();
+    BigDecimal previousReading  = BigDecimal.ONE;
+    Instant previousReadingTime = now.minusSeconds(2 * number * 10L);
 
     Random readingRandomiser = new Random();
+
     for (int i = 0; i < number; i++) {
-      double positiveRandomValue = Math.abs(readingRandomiser.nextGaussian());
-      BigDecimal randomReading =
-          BigDecimal.valueOf(positiveRandomValue).setScale(4, RoundingMode.CEILING);
+      double positiveIncrement = Math.abs(readingRandomiser.nextGaussian());
+      BigDecimal currentReading = previousReading.add(
+          BigDecimal.valueOf(positiveIncrement)).setScale(4, RoundingMode.CEILING);
       ElectricityReading electricityReading =
-          new ElectricityReading(now.minusSeconds(i * 10L), randomReading);
+          new ElectricityReading(previousReadingTime.plusSeconds(i * 10L), currentReading);
       readings.add(electricityReading);
+      previousReading = currentReading;
     }
 
     readings.sort(Comparator.comparing(ElectricityReading::time));

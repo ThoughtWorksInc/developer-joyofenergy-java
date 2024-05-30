@@ -45,8 +45,8 @@ public class PricePlanComparatorControllerTest {
   @Test
   public void calculatedCostForEachPricePlan_happyPath() {
     var electricityReading =
-        new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(15.0));
-    var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(5.0));
+        new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(5.0));
+    var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(15.0));
     meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
 
     ResponseEntity<Map<String, Object>> response =
@@ -76,8 +76,8 @@ public class PricePlanComparatorControllerTest {
   @Test
   public void recommendCheapestPricePlans_noLimit() {
     var electricityReading =
-        new ElectricityReading(Instant.now().minusSeconds(1800), BigDecimal.valueOf(35.0));
-    var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(3.0));
+        new ElectricityReading(Instant.now().minusSeconds(1800), BigDecimal.valueOf(3.0));
+    var otherReading = new ElectricityReading(Instant.now(), BigDecimal.valueOf(35.0));
     meterReadingRepository.storeReadings(SMART_METER_ID, List.of(electricityReading, otherReading));
 
     ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
@@ -86,9 +86,9 @@ public class PricePlanComparatorControllerTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     var expectedPricePlanToCost =
         List.of(
-            new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(38.0)),
-            new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(76.0)),
-            new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(380.0)));
+            new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(32.0)),
+            new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(64.0)),
+            new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(320.0)));
     assertThat(response.getBody()).isEqualTo(expectedPricePlanToCost);
   }
 
@@ -104,16 +104,16 @@ public class PricePlanComparatorControllerTest {
 
     var expectedPricePlanToCost =
         List.of(
-            new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(16.7)),
-            new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(33.4)));
+            new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(15.0)),
+            new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(30.0)));
     assertThat(response.getBody()).isEqualTo(expectedPricePlanToCost);
   }
 
   @Test
   public void recommendCheapestPricePlans_limitHigherThanNumberOfEntries() {
     var reading0 =
-        new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(25.0));
-    var reading1 = new ElectricityReading(Instant.now(), BigDecimal.valueOf(3.0));
+        new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(3.0));
+    var reading1 = new ElectricityReading(Instant.now(), BigDecimal.valueOf(25.0));
     meterReadingRepository.storeReadings(SMART_METER_ID, List.of(reading0, reading1));
 
     ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
@@ -121,9 +121,9 @@ public class PricePlanComparatorControllerTest {
 
     var expectedPricePlanToCost =
         List.of(
-            new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(14.0)),
-            new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(28.0)),
-            new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(140.0)));
+            new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(22.0)),
+            new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(44.0)),
+            new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(220.0)));
     assertThat(response.getBody()).isEqualTo(expectedPricePlanToCost);
   }
 }
