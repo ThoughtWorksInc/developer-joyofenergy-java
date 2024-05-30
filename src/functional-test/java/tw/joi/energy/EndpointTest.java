@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import tw.joi.energy.builders.StoreReadingsRequestBuilder;
+import tw.joi.energy.controller.StoreReadingsRequest;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.MeterReadings;
 
@@ -25,7 +26,7 @@ public class EndpointTest {
 
   @Autowired private TestRestTemplate restTemplate;
 
-  private static HttpEntity<MeterReadings> toHttpEntity(MeterReadings meterReadings) {
+  private static HttpEntity<StoreReadingsRequest> toHttpEntity(StoreReadingsRequest meterReadings) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     return new HttpEntity<>(meterReadings, headers);
@@ -33,8 +34,8 @@ public class EndpointTest {
 
   @Test
   public void shouldStoreReadings() {
-    MeterReadings meterReadings = new StoreReadingsRequestBuilder().generateElectricityReadings().build();
-    HttpEntity<MeterReadings> entity = toHttpEntity(meterReadings);
+    StoreReadingsRequest meterReadings = new StoreReadingsRequestBuilder().generateElectricityReadings().build();
+    HttpEntity<StoreReadingsRequest> entity = toHttpEntity(meterReadings);
 
     ResponseEntity<String> response =
         restTemplate.postForEntity("/readings/store", entity, String.class);
@@ -101,9 +102,9 @@ public class EndpointTest {
   }
 
   private void populateReadingsForMeter(String smartMeterId, List<ElectricityReading> data) {
-    MeterReadings readings = new MeterReadings(smartMeterId, data);
+    StoreReadingsRequest readings = new StoreReadingsRequest(smartMeterId, data);
 
-    HttpEntity<MeterReadings> entity = toHttpEntity(readings);
+    HttpEntity<StoreReadingsRequest> entity = toHttpEntity(readings);
     restTemplate.postForEntity("/readings/store", entity, String.class);
   }
 
