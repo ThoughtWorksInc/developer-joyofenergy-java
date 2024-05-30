@@ -10,17 +10,14 @@ public class PricePlan {
   private final String energySupplier;
   private final String planName;
   private final BigDecimal unitRate; // unit price per kWh
-  private final List<PeakTimeMultiplier> peakTimeMultipliers;
 
   public PricePlan(
       String planName,
       String energySupplier,
-      BigDecimal unitRate,
-      List<PeakTimeMultiplier> peakTimeMultipliers) {
+      BigDecimal unitRate) {
     this.planName = planName;
     this.energySupplier = energySupplier;
     this.unitRate = unitRate;
-    this.peakTimeMultipliers = peakTimeMultipliers;
   }
 
   public String getEnergySupplier() {
@@ -36,21 +33,6 @@ public class PricePlan {
   }
 
   public BigDecimal getPrice(LocalDateTime dateTime) {
-    return peakTimeMultipliers.stream()
-        .filter(multiplier -> multiplier.dayOfWeek.equals(dateTime.getDayOfWeek()))
-        .findFirst()
-        .map(multiplier -> unitRate.multiply(multiplier.multiplier))
-        .orElse(unitRate);
-  }
-
-  static class PeakTimeMultiplier {
-
-    DayOfWeek dayOfWeek;
-    BigDecimal multiplier;
-
-    public PeakTimeMultiplier(DayOfWeek dayOfWeek, BigDecimal multiplier) {
-      this.dayOfWeek = dayOfWeek;
-      this.multiplier = multiplier;
-    }
+    return unitRate;
   }
 }

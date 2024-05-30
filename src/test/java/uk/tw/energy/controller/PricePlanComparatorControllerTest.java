@@ -31,9 +31,9 @@ public class PricePlanComparatorControllerTest {
   public void setUp() {
     meterReadingRepository = new MeterReadingRepository(new HashMap<>());
 
-    PricePlan pricePlan1 = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN, null);
-    PricePlan pricePlan2 = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE, null);
-    PricePlan pricePlan3 = new PricePlan(SECOND_BEST_PLAN_ID, null, BigDecimal.valueOf(2), null);
+    PricePlan pricePlan1 = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN);
+    PricePlan pricePlan2 = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE);
+    PricePlan pricePlan3 = new PricePlan(SECOND_BEST_PLAN_ID, null, BigDecimal.valueOf(2));
     List<PricePlan> pricePlans = List.of(pricePlan1, pricePlan2, pricePlan3);
     PricePlanService pricePlanService = new PricePlanService(pricePlans, meterReadingRepository);
 

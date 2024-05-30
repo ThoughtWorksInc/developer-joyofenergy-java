@@ -29,12 +29,12 @@ public class SeedingApplicationDataConfiguration {
     final List<PricePlan> pricePlans = new ArrayList<>();
     pricePlans.add(
         new PricePlan(
-            MOST_EVIL_PRICE_PLAN_ID, "Dr Evil's Dark Energy", BigDecimal.TEN, emptyList()));
+            MOST_EVIL_PRICE_PLAN_ID, "Dr Evil's Dark Energy", BigDecimal.TEN));
     pricePlans.add(
         new PricePlan(
-            RENEWABLES_PRICE_PLAN_ID, "The Green Eco", BigDecimal.valueOf(2), emptyList()));
+            RENEWABLES_PRICE_PLAN_ID, "The Green Eco", BigDecimal.valueOf(2)));
     pricePlans.add(
-        new PricePlan(STANDARD_PRICE_PLAN_ID, "Power for Everyone", BigDecimal.ONE, emptyList()));
+        new PricePlan(STANDARD_PRICE_PLAN_ID, "Power for Everyone", BigDecimal.ONE));
     return pricePlans;
   }
 
