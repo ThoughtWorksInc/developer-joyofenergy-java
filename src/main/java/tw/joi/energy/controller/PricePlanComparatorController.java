@@ -38,7 +38,7 @@ public class PricePlanComparatorController {
         }
         SmartMeter smartMeter = optionalSmartMeter.get();
 
-        String pricePlanId = smartMeter.getSmartMeterId();
+        String pricePlanId = smartMeter.getPricePlanId();
         Map<String, BigDecimal> consumptionsForPricePlans =
                 pricePlanService.getConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeter);
 

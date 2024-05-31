@@ -8,8 +8,8 @@ import tw.joi.energy.domain.SmartMeter;
 public class SmartMeterRepository {
     private final Map<String, SmartMeter> smartMeters = new HashMap<>();
 
-    public void save(String smartmeterId, SmartMeter smartMeter) {
-        this.smartMeters.put(smartmeterId, smartMeter);
+    public void save(String smartMeterId, SmartMeter smartMeter) {
+        this.smartMeters.put(smartMeterId, smartMeter);
     }
 
     public Optional<SmartMeter> findById(String smartMeterId) {

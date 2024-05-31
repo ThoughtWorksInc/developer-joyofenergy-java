@@ -1,5 +1,7 @@
 package tw.joi.energy.domain;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +12,7 @@ public class SmartMeter {
 
     public SmartMeter(PricePlan pricePlan, List<ElectricityReading> electricityReadings) {
         this.pricePlan = pricePlan;
-        this.electricityReadings = new ArrayList<>(electricityReadings);
+        this.electricityReadings = new ArrayList<>(requireNonNull(electricityReadings));
     }
 
     public List<ElectricityReading> electricityReadings() {
@@ -21,7 +23,7 @@ public class SmartMeter {
         this.electricityReadings.addAll(electricityReadings);
     }
 
-    public String getSmartMeterId() {
+    public String getPricePlanId() {
         if (null == pricePlan) {
             return null;
         }
