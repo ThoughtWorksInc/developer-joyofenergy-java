@@ -37,25 +37,15 @@ These values are used in the code and in the following examples too.
 
 ## Requirements
 
-The project requires [Java 21](https://adoptium.net/en-GB/) or
-higher.
+The project requires [Java 21](https://adoptium.net/) or higher.
 
-## Useful Gradle commands
+## Useful commands
 
-The project makes use of Gradle and uses the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) to help you out carrying some common tasks such as building
-the project or running it.
-
-### List all Gradle tasks
-
-List all the tasks that Gradle can do, such as `build` and `test`.
-
-```console
-$ ./gradlew tasks
-```
+The project uses Gradle and the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html), so that you don't need to have Gradle installed.  
 
 ### Build the project
 
-Compiles the project, runs the test and then creates an executable JAR file
+Compile the project, run the tests and creates an executable JAR file
 
 ```console
 $ ./gradlew build
@@ -220,7 +210,7 @@ Parameters
 | -------------- | ---------------------------------------- |
 | `smartMeterId` | One of the smart meters' id listed above |
 
-Retrieving readings using CURL
+Sample endpoint call with CURL
 
 ```console
 $ curl "http://localhost:8080/price-plans/compare-all/smart-meter-0"
@@ -254,7 +244,7 @@ Parameters
 | `smartMeterId` | One of the smart meters' id listed above             |
 | `limit`        | (Optional) limit the number of plans to be displayed |
 
-Retrieving readings using CURL
+Sample endpoint call with CURL
 
 ```console
 $ curl "http://localhost:8080/price-plans/recommend/smart-meter-0?limit=2"
