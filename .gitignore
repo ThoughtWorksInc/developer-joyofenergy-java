@@ -137,6 +137,9 @@ gradle-app.setting
 
 .vscode/
 
+# asdf version file
+.tool-versions
+
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
