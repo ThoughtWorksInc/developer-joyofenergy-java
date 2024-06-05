@@ -41,7 +41,7 @@ The project requires [Java 21](https://adoptium.net/) or higher.
 
 ## Useful commands
 
-The project uses Gradle and the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html), so that you don't need to have Gradle installed.  
+The project uses Gradle and the Gradle wrapper, so that you don't need to have Gradle installed.  
 
 ### Build the project
 
@@ -99,7 +99,7 @@ to [run the application](#run-the-application) section above.
 Endpoint
 
 ```text
-POST /readings/store
+POST /readings
 ```
 
 Example of body
@@ -143,7 +143,7 @@ The following POST request, is an example request using CURL, sends the readings
 $ curl \
   -X POST \
   -H "Content-Type: application/json" \
-  "http://localhost:8080/readings/store" \
+  "http://localhost:8080/readings" \
   -d '{"smartMeterId":"smart-meter-0","electricityReadings":[{"time":1606636800,"reading":0.0503},{"time":1606636860,"reading":0.0621},{"time":1606636920,"reading":0.0222},{"time":1606636980,"reading":0.0423},{"time":1606637040,"reading":0.0191}]}'
 ```
 
