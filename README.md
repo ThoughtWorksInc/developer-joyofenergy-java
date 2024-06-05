@@ -49,14 +49,7 @@ Compile the project, run the tests and creates an executable JAR file
 $ ./gradlew build
 ```
 
-Run the application using Java and the executable JAR file produced by the Gradle `build` task. The application will be
-listening to port `8080`.
-
-```console
-$ java -jar build/libs/developer-joyofenergy-java.jar
-```
-
-### Run the tests
+### Run tests
 
 There are two types of tests, the unit tests and the functional tests. These can be executed as follows.
 
@@ -72,7 +65,7 @@ There are two types of tests, the unit tests and the functional tests. These can
   $ ./gradlew functionalTest
   ```
 
-- Run both unit and functional tests
+- Run unit, functional and code style tests
 
   ```console
   $ ./gradlew check
