@@ -1,13 +1,15 @@
 # Welcome to PowerDale
 
 PowerDale is a small town with around 100 residents. Most houses have a smart meter installed that can save and send
-information about how much power a house has consumed.
+information about how much energy a house has consumed.
 
-There are three major providers of energy in town that charge different amounts for the power they supply.
+There are three major power suppliers in town that charge different amounts for the power they supply.
 
 - _Dr Evil's Dark Energy_
 - _The Green Eco_
 - _Power for Everyone_
+
+Each customer with a smart meter needs to sign up for one of the price plans offered by these suppliers.
 
 # Introducing JOI Energy
 
@@ -17,21 +19,22 @@ meet their needs.
 
 This codebase is for an API which their customers and smart meters will interact with.
 
-Unfortunately, as the codebase has evolved, it has gathered a number of code smells and questionable design decisions. 
-Our goal with this exercise would be to deliver value by implementing a new feature, while at the same time improving the codebase by refactoring away any code smells we identify.
+Unfortunately, as the codebase has evolved, it has gathered a number of code smells and some questionable design decisions.
+Our goal with this exercise would be to deliver value by implementing a new feature, while at the same time improving the
+codebase by refactoring away any code smells we identify.
 
 ## Users
 
 To trial the new JOI software 5 people from the JOI accounts team have agreed to test the service and share their energy
 data.
 
-| User    | Smart Meter ID  | Power Supplier        |
-| ------- | --------------- | --------------------- |
-| Sarah   | `smart-meter-0` | Dr Evil's Dark Energy |
-| Peter   | `smart-meter-1` | The Green Eco         |
-| Charlie | `smart-meter-2` | Dr Evil's Dark Energy |
-| Andrea  | `smart-meter-3` | Power for Everyone    |
-| Alex    | `smart-meter-4` | The Green Eco         |
+| User   | Smart Meter ID  | Power Supplier        |
+|--------|-----------------|-----------------------|
+| Sarah  | `smart-meter-0` | Dr Evil's Dark Energy |
+| Paolo  | `smart-meter-1` | The Green Eco         |
+| Chitra | `smart-meter-2` | Dr Evil's Dark Energy |
+| Andrei | `smart-meter-3` | Power for Everyone    |
+| Jingyi | `smart-meter-4` | The Green Eco         |
 
 These values are used in the code and in the following examples too.
 
@@ -108,7 +111,7 @@ Example of body
 Parameters
 
 | Parameter      | Description                                           |
-| -------------- | ----------------------------------------------------- |
+|----------------|-------------------------------------------------------|
 | `smartMeterId` | One of the smart meters' id listed above              |
 | `time`         | The date/time (as epoch) when the _reading_ was taken |
 | `reading`      | The consumption in `kW` at the _time_ of the reading  |
@@ -116,7 +119,7 @@ Parameters
 Example readings
 
 | Date (`GMT`)      | Epoch timestamp | Reading (`kWh`) |
-|-------------------| --------------: |----------------:|
+|-------------------|----------------:|----------------:|
 | `2020-11-29 8:00` |      1606636800 |          0.0503 |
 | `2020-11-29 9:00` |      1606636860 |          0.0621 |
 | `2020-11-30 7:30` |      1606636920 |          0.0922 |
@@ -146,7 +149,7 @@ GET /readings/<smartMeterId>
 Parameters
 
 | Parameter      | Description                              |
-| -------------- | ---------------------------------------- |
+|----------------|------------------------------------------|
 | `smartMeterId` | One of the smart meters' id listed above |
 
 Retrieving readings using CURL
@@ -191,7 +194,7 @@ GET /price-plans/compare-all/<smartMeterId>
 Parameters
 
 | Parameter      | Description                              |
-| -------------- | ---------------------------------------- |
+|----------------|------------------------------------------|
 | `smartMeterId` | One of the smart meters' id listed above |
 
 Sample call with CURL
@@ -222,7 +225,7 @@ GET /price-plans/recommend/<smartMeterId>[?limit=<limit>]
 Parameters
 
 | Parameter      | Description                                          |
-| -------------- | ---------------------------------------------------- |
+|----------------|------------------------------------------------------|
 | `smartMeterId` | One of the smart meters' id listed above             |
 | `limit`        | (Optional) limit the number of plans to be displayed |
 
