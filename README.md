@@ -41,8 +41,6 @@ The project requires [Java 21](https://adoptium.net/) or higher.
 
 ## Useful commands
 
-The project uses Gradle and the Gradle wrapper, so that you don't need to have Gradle installed.  
-
 ### Build the project
 
 Compile the project, run the tests and creates an executable JAR file
