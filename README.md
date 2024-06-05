@@ -92,9 +92,7 @@ Below is a list of API endpoints with their respective input and output. Please 
 running for the following endpoints to work. For more information about how to run the application, please refer
 to [run the application](#run-the-application) section above.
 
-### Store Readings
-
-Endpoint
+### Endpoint 1: Store Readings
 
 ```text
 POST /readings
@@ -132,8 +130,7 @@ Example readings
 | `2020-11-31 8:30` |      1606636980 |          0.1223 |
 | `2020-11-31 8:00` |      1606637040 |          0.1391 |
 
-In the above example, the smart meter periodically sampled readings, in `kWh`, over multiple days. Note that since the smart meter is reporting the total consumption at that point in time, the reading value will either be higher or the same as the previous reading. These readings are then sent by the
-smart meter to the application using the provided REST API. 
+In the above example, the smart meter periodically sampled readings, in `kWh`, over multiple days. Note that since the smart meter is reporting the total consumption at that point in time, the reading value will either be higher or the same as the previous reading. These readings are then sent by the smart meter to the application using the provided REST API. 
 
 The following POST request, is an example request using CURL, sends the readings shown in the table above.
 
@@ -147,9 +144,7 @@ $ curl \
 
 The above command does not return anything.
 
-### Get Stored Readings
-
-Endpoint
+### Endpoint 2: Get Stored Readings
 
 ```text
 GET /readings/<smartMeterId>
@@ -194,9 +189,7 @@ Example output
 ]
 ```
 
-### View Current Price Plan and Compare Usage Cost Against all Price Plans
-
-Endpoint
+### Endpoint 3: View Current Price Plan and Compare Usage Cost Against all Price Plans
 
 ```text
 GET /price-plans/compare-all/<smartMeterId>
@@ -208,7 +201,7 @@ Parameters
 | -------------- | ---------------------------------------- |
 | `smartMeterId` | One of the smart meters' id listed above |
 
-Sample endpoint call with CURL
+Sample call with CURL
 
 ```console
 $ curl "http://localhost:8080/price-plans/compare-all/smart-meter-0"
@@ -227,9 +220,7 @@ Example output
 }
 ```
 
-### View Recommended Price Plans for Usage
-
-Endpoint
+### Endpoint 4: View Recommended Price Plans for Usage
 
 ```text
 GET /price-plans/recommend/<smartMeterId>[?limit=<limit>]
@@ -242,7 +233,7 @@ Parameters
 | `smartMeterId` | One of the smart meters' id listed above             |
 | `limit`        | (Optional) limit the number of plans to be displayed |
 
-Sample endpoint call with CURL
+Sample call with CURL
 
 ```console
 $ curl "http://localhost:8080/price-plans/recommend/smart-meter-0?limit=2"
