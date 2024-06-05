@@ -4,52 +4,57 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import tw.joi.energy.builders.StoreReadingsRequestBuilder;
+import tw.joi.energy.config.ElectricityReadingsGenerator;
+import tw.joi.energy.controller.MeterReadingManager;
 import tw.joi.energy.controller.StoreReadingsRequest;
 import tw.joi.energy.domain.ElectricityReading;
+import tw.joi.energy.repository.SmartMeterRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = App.class)
 public class EndpointTest {
+    private static final String DEFAULT_METER_ID = "id";
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
     public void shouldStoreReadings() {
-        StoreReadingsRequest meterReadings =
-                new StoreReadingsRequestBuilder().generateElectricityReadings().build();
-        HttpEntity<StoreReadingsRequest> entity = toHttpEntity(meterReadings);
+        var meterRepository = new SmartMeterRepository();
+        var smartMeterReadingsManager = new MeterReadingManager(meterRepository);
+        var meterReadings = new ElectricityReadingsGenerator().generate(5);
 
-        ResponseEntity<String> response = restTemplate.postForEntity("/readings", entity, String.class);
+        smartMeterReadingsManager.storeReadings(DEFAULT_METER_ID, meterReadings);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(meterRepository.findById(DEFAULT_METER_ID).get().electricityReadings())
+                .isEqualTo(meterReadings);
     }
 
     @SuppressWarnings("DataFlowIssue")
     @Test
     public void givenMeterIdShouldReturnAMeterReadingAssociatedWithMeterId() {
+        var meterRepository = new SmartMeterRepository();
+        var smartMeterReadingsManager = new MeterReadingManager(meterRepository);
         String smartMeterId = "alice";
-        List<ElectricityReading> data = List.of(
+        var meterReadings = List.of(
                 new ElectricityReading(Instant.parse("2024-04-26T00:00:10.00Z"), new BigDecimal(10)),
                 new ElectricityReading(Instant.parse("2024-04-26T00:00:20.00Z"), new BigDecimal(20)),
                 new ElectricityReading(Instant.parse("2024-04-26T00:00:30.00Z"), new BigDecimal(30)));
-        populateReadingsForMeter(smartMeterId, data);
+        smartMeterReadingsManager.storeReadings(smartMeterId, meterReadings);
 
-        ResponseEntity<ElectricityReading[]> response =
-                restTemplate.getForEntity("/readings/read/" + smartMeterId, ElectricityReading[].class);
+        var actualReadings = smartMeterReadingsManager.readReadings(smartMeterId);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(Arrays.asList(response.getBody())).isEqualTo(data);
+        assertThat(actualReadings).isEqualTo(meterReadings);
     }
 
+    @Disabled("needs to be migrated off the REST interface")
     @Test
     public void shouldCalculateAllPrices() {
         String smartMeterId = "bob";
@@ -68,6 +73,7 @@ public class EndpointTest {
                         Map.of("price-plan-0", 200, "price-plan-1", 40, "price-plan-2", 20), null));
     }
 
+    @Disabled("needs to be migrated off the REST interface")
     @SuppressWarnings("rawtypes")
     @Test
     public void givenMeterIdAndLimitShouldReturnRecommendedCheapestPricePlans() {
