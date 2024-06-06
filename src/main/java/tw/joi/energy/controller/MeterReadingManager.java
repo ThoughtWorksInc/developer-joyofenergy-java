@@ -22,7 +22,7 @@ public class MeterReadingManager {
 
         // check if given electricityReadings are valid
         if (electricityReadings == null || electricityReadings.isEmpty()) {
-            throw new IllegalArgumentException("elecricity readings must be provided");
+            throw new IllegalArgumentException("electricity readings must be provided");
         }
 
         // save

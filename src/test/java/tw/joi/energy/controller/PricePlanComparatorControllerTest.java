@@ -1,5 +1,6 @@
 package tw.joi.energy.controller;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.math.BigDecimal;
@@ -9,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
@@ -22,7 +21,7 @@ public class PricePlanComparatorControllerTest {
     private static final String BEST_PLAN_ID = "best-supplier";
     private static final String SECOND_BEST_PLAN_ID = "second-best-supplier";
     private static final String SMART_METER_ID = "smart-meter-id";
-    private PricePlanComparatorController controller;
+    private PricePlanComparator controller;
     private SmartMeterRepository smartMeterRepository;
     private PricePlan WORST_PLAN;
 
@@ -35,7 +34,7 @@ public class PricePlanComparatorControllerTest {
         PricePlanService pricePlanService = new PricePlanService(pricePlans);
 
         smartMeterRepository = new SmartMeterRepository();
-        controller = new PricePlanComparatorController(pricePlanService, smartMeterRepository);
+        controller = new PricePlanComparator(pricePlanService, smartMeterRepository);
     }
 
     @Test
@@ -46,25 +45,24 @@ public class PricePlanComparatorControllerTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        ResponseEntity<Map<String, Object>> response = controller.calculatedCostForEachPricePlan(SMART_METER_ID);
+        var response = controller.calculatedCostForEachPricePlan(SMART_METER_ID);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Map<String, Object> expected = Map.of(
-                PricePlanComparatorController.PRICE_PLAN_ID_KEY,
+                PricePlanComparator.PRICE_PLAN_ID_KEY,
                 WORST_PLAN_ID,
-                PricePlanComparatorController.PRICE_PLAN_COMPARISONS_KEY,
+                PricePlanComparator.PRICE_PLAN_COMPARISONS_KEY,
                 Map.of(
                         WORST_PLAN_ID, BigDecimal.valueOf(100.0),
                         BEST_PLAN_ID, BigDecimal.valueOf(10.0),
                         SECOND_BEST_PLAN_ID, BigDecimal.valueOf(20.0)));
-        assertThat(response.getBody()).isEqualTo(expected);
+        assertThat(response).isEqualTo(expected);
     }
 
     @Test
     public void calculatedCostForEachPricePlan_noReadings() {
-        ResponseEntity<Map<String, Object>> response = controller.calculatedCostForEachPricePlan("not-found");
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThatThrownBy(() -> controller.calculatedCostForEachPricePlan("not-found"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("args");
     }
 
     @Test
@@ -75,15 +73,13 @@ public class PricePlanComparatorControllerTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
-                controller.recommendCheapestPricePlans(SMART_METER_ID, null);
+        var response = controller.recommendCheapestPricePlans(SMART_METER_ID, null);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         var expectedPricePlanToCost = List.of(
                 new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(32.0)),
                 new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(64.0)),
                 new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(320.0)));
-        assertThat(response.getBody()).isEqualTo(expectedPricePlanToCost);
+        assertThat(response).isEqualTo(expectedPricePlanToCost);
     }
 
     @Test
@@ -94,13 +90,12 @@ public class PricePlanComparatorControllerTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
-                controller.recommendCheapestPricePlans(SMART_METER_ID, 2);
+        var response = controller.recommendCheapestPricePlans(SMART_METER_ID, 2);
 
         var expectedPricePlanToCost = List.of(
                 new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(15.0)),
                 new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(30.0)));
-        assertThat(response.getBody()).isEqualTo(expectedPricePlanToCost);
+        assertThat(response).isEqualTo(expectedPricePlanToCost);
     }
 
     @Test
@@ -111,13 +106,12 @@ public class PricePlanComparatorControllerTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        ResponseEntity<List<Map.Entry<String, BigDecimal>>> response =
-                controller.recommendCheapestPricePlans(SMART_METER_ID, 5);
+        var response = controller.recommendCheapestPricePlans(SMART_METER_ID, 5);
 
         var expectedPricePlanToCost = List.of(
                 new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(22.0)),
                 new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(44.0)),
                 new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(220.0)));
-        assertThat(response.getBody()).isEqualTo(expectedPricePlanToCost);
+        assertThat(response).isEqualTo(expectedPricePlanToCost);
     }
 }
