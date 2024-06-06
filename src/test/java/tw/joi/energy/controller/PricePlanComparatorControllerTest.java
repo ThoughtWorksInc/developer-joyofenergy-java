@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
-import tw.joi.energy.repository.SmartMeterRepository;
 import tw.joi.energy.repository.PricePlanRepository;
+import tw.joi.energy.repository.SmartMeterRepository;
 import tw.joi.energy.service.PricePlanComparator;
 
 public class PricePlanComparatorControllerTest {
