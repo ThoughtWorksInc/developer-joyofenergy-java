@@ -6,7 +6,7 @@ import tw.joi.energy.config.ElectricityReadingsGenerator;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
 import tw.joi.energy.repository.SmartMeterRepository;
-import tw.joi.energy.service.PricePlanService;
+import tw.joi.energy.repository.PricePlanRepository;
 
 public final class TestData {
 
@@ -28,7 +28,7 @@ public final class TestData {
         return smartMeterRepository;
     }
 
-    public static PricePlanService pricePlanService() {
-        return new PricePlanService(List.of(MOST_EVIL_PRICE_PLAN, RENEWABLES_PRICE_PLAN, STANDARD_PRICE_PLAN));
+    public static PricePlanRepository pricePlanService() {
+        return new PricePlanRepository(List.of(MOST_EVIL_PRICE_PLAN, RENEWABLES_PRICE_PLAN, STANDARD_PRICE_PLAN));
     }
 }

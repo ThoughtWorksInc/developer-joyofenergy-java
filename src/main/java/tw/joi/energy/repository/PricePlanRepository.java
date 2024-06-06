@@ -1,4 +1,4 @@
-package tw.joi.energy.service;
+package tw.joi.energy.repository;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -9,10 +9,10 @@ import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
 
-public class PricePlanService {
+public class PricePlanRepository {
     private final List<PricePlan> pricePlans;
 
-    public PricePlanService(List<PricePlan> pricePlans) {
+    public PricePlanRepository(List<PricePlan> pricePlans) {
         this.pricePlans = pricePlans;
     }
 

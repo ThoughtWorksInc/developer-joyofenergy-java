@@ -14,7 +14,8 @@ import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
 import tw.joi.energy.repository.SmartMeterRepository;
-import tw.joi.energy.service.PricePlanService;
+import tw.joi.energy.repository.PricePlanRepository;
+import tw.joi.energy.service.PricePlanComparator;
 
 public class PricePlanComparatorControllerTest {
     private static final String WORST_PLAN_ID = "worst-supplier";
@@ -31,10 +32,10 @@ public class PricePlanComparatorControllerTest {
         PricePlan pricePlan2 = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE);
         PricePlan pricePlan3 = new PricePlan(SECOND_BEST_PLAN_ID, null, BigDecimal.valueOf(2));
         List<PricePlan> pricePlans = List.of(WORST_PLAN, pricePlan2, pricePlan3);
-        PricePlanService pricePlanService = new PricePlanService(pricePlans);
+        PricePlanRepository pricePlanRepository = new PricePlanRepository(pricePlans);
 
         smartMeterRepository = new SmartMeterRepository();
-        controller = new PricePlanComparator(pricePlanService, smartMeterRepository);
+        controller = new PricePlanComparator(pricePlanRepository, smartMeterRepository);
     }
 
     @Test

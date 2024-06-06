@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import tw.joi.energy.config.ElectricityReadingsGenerator;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.repository.SmartMeterRepository;
+import tw.joi.energy.service.MeterReadingManager;
 
 public class MeterReadingManagerTest {
 

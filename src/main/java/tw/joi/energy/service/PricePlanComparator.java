@@ -1,4 +1,4 @@
-package tw.joi.energy.controller;
+package tw.joi.energy.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,17 +8,17 @@ import java.util.Map;
 import java.util.Optional;
 import tw.joi.energy.domain.SmartMeter;
 import tw.joi.energy.repository.SmartMeterRepository;
-import tw.joi.energy.service.PricePlanService;
+import tw.joi.energy.repository.PricePlanRepository;
 
 public class PricePlanComparator {
 
     public static final String PRICE_PLAN_ID_KEY = "pricePlanId";
     public static final String PRICE_PLAN_COMPARISONS_KEY = "pricePlanComparisons";
-    private final PricePlanService pricePlanService;
+    private final PricePlanRepository pricePlanRepository;
     private final SmartMeterRepository smartMeterRepository;
 
-    public PricePlanComparator(PricePlanService pricePlanService, SmartMeterRepository smartMeterRepository) {
-        this.pricePlanService = pricePlanService;
+    public PricePlanComparator(PricePlanRepository pricePlanRepository, SmartMeterRepository smartMeterRepository) {
+        this.pricePlanRepository = pricePlanRepository;
         this.smartMeterRepository = smartMeterRepository;
     }
 
@@ -31,7 +31,7 @@ public class PricePlanComparator {
 
         String pricePlanId = smartMeter.getPricePlanId();
         Map<String, BigDecimal> consumptionsForPricePlans =
-                pricePlanService.getConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeter);
+                pricePlanRepository.getConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeter);
 
         Map<String, Object> pricePlanComparisons = new HashMap<>();
         pricePlanComparisons.put(PRICE_PLAN_ID_KEY, pricePlanId);
@@ -46,7 +46,7 @@ public class PricePlanComparator {
         }
         SmartMeter smartMeter = optionalSmartMeter.get();
         Map<String, BigDecimal> consumptionsForPricePlans =
-                pricePlanService.getConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeter);
+                pricePlanRepository.getConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeter);
 
         List<Map.Entry<String, BigDecimal>> recommendations = new ArrayList<>(consumptionsForPricePlans.entrySet());
         recommendations.sort(Map.Entry.comparingByValue());
