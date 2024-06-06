@@ -4,8 +4,6 @@ plugins {
     java
     idea
     eclipse
-    id("org.springframework.boot")
-    id("io.spring.dependency-management")
     id("com.github.ben-manes.versions")
     id("com.diffplug.spotless")
 }
@@ -62,13 +60,10 @@ val functionalTest = task<Test>("functionalTest") {
     }
 }
 
-
 dependencies {
-    /* Spring Boot */
-    implementation ("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude (group = "org.junit.vintage", module = "junit-vintage-engine")
-    }
+    testImplementation("org.assertj:assertj-core:3.15+")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
 tasks.named<Test>("test") {
