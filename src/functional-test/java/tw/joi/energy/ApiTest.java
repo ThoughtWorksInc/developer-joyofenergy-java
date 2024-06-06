@@ -13,7 +13,7 @@ import tw.joi.energy.service.MeterReadingManager;
 import tw.joi.energy.service.PricePlanComparator;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.repository.SmartMeterRepository;
-import tw.joi.energy.util.TestData;
+import tw.joi.energy.config.TestData;
 
 public class ApiTest {
     private static final String DEFAULT_METER_ID = "id";

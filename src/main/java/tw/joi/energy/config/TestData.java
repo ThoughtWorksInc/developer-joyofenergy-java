@@ -1,8 +1,8 @@
-package tw.joi.energy.util;
+package tw.joi.energy.config;
 
 import java.math.BigDecimal;
 import java.util.List;
-import tw.joi.energy.config.ElectricityReadingsGenerator;
+
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
 import tw.joi.energy.repository.SmartMeterRepository;
