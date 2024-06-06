@@ -5,7 +5,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,9 +76,9 @@ public class PricePlanComparatorControllerTest {
         var response = controller.recommendCheapestPricePlans(SMART_METER_ID, null);
 
         var expectedPricePlanToCost = List.of(
-                new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(32.0)),
-                new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(64.0)),
-                new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(320.0)));
+                Map.entry(BEST_PLAN_ID, BigDecimal.valueOf(32.0)),
+                Map.entry(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(64.0)),
+                Map.entry(WORST_PLAN_ID, BigDecimal.valueOf(320.0)));
         assertThat(response).isEqualTo(expectedPricePlanToCost);
     }
 
@@ -94,8 +93,8 @@ public class PricePlanComparatorControllerTest {
         var response = controller.recommendCheapestPricePlans(SMART_METER_ID, 2);
 
         var expectedPricePlanToCost = List.of(
-                new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(15.0)),
-                new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(30.0)));
+                Map.entry(BEST_PLAN_ID, BigDecimal.valueOf(15.0)),
+                Map.entry(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(30.0)));
         assertThat(response).isEqualTo(expectedPricePlanToCost);
     }
 
@@ -110,9 +109,9 @@ public class PricePlanComparatorControllerTest {
         var response = controller.recommendCheapestPricePlans(SMART_METER_ID, 5);
 
         var expectedPricePlanToCost = List.of(
-                new AbstractMap.SimpleEntry<>(BEST_PLAN_ID, BigDecimal.valueOf(22.0)),
-                new AbstractMap.SimpleEntry<>(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(44.0)),
-                new AbstractMap.SimpleEntry<>(WORST_PLAN_ID, BigDecimal.valueOf(220.0)));
+                Map.entry(BEST_PLAN_ID, BigDecimal.valueOf(22.0)),
+                Map.entry(SECOND_BEST_PLAN_ID, BigDecimal.valueOf(44.0)),
+                Map.entry(WORST_PLAN_ID, BigDecimal.valueOf(220.0)));
         assertThat(response).isEqualTo(expectedPricePlanToCost);
     }
 }
