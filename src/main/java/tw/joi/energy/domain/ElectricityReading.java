@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
- * @param reading kW
+ * @param reading KWh
  */
 public record ElectricityReading(Instant time, BigDecimal reading) {}
