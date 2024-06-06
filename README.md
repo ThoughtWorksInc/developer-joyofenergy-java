@@ -45,8 +45,6 @@ The project requires [Java 21](https://adoptium.net/) or higher.
 
 ## Useful commands
 
-### Build the project
-
 Compile the project, run the tests and creates an executable JAR file
 
 ```console
@@ -55,28 +53,17 @@ $ ./gradlew build
 
 ### Run tests
 
-There are two types of tests, the unit tests and the functional tests. These can be executed as follows.
+```console
+$ ./gradlew test
+```
 
-- Run unit tests only
+### Sample run
 
-  ```console
-  $ ./gradlew test
-  ```
-
-- Run functional tests only
-
-  ```console
-  $ ./gradlew functionalTest
-  ```
-
-- Run unit, functional and code style tests
-
-  ```console
-  $ ./gradlew check
-  ```
-
+```console
+$ ./gradlew run
+```
 
 ## API
+
 TODO: add some documentation for the classes
 
-```
