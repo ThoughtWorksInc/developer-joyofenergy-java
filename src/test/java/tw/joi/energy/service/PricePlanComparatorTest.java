@@ -1,4 +1,4 @@
-package tw.joi.energy.controller;
+package tw.joi.energy.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -14,9 +14,8 @@ import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
 import tw.joi.energy.repository.PricePlanRepository;
 import tw.joi.energy.repository.SmartMeterRepository;
-import tw.joi.energy.service.PricePlanComparator;
 
-public class PricePlanComparatorControllerTest {
+public class PricePlanComparatorTest {
     private static final String WORST_PLAN_ID = "worst-supplier";
     private static final String BEST_PLAN_ID = "best-supplier";
     private static final String SECOND_BEST_PLAN_ID = "second-best-supplier";
