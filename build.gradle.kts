@@ -2,9 +2,9 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     java
+    application
     idea
     eclipse
-    application
     id("com.github.ben-manes.versions")
     id("com.diffplug.spotless")
 }
@@ -20,9 +20,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.assertj:assertj-core:3.15+")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("org.assertj:assertj-core:3.26+")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
 }
 
 application {
