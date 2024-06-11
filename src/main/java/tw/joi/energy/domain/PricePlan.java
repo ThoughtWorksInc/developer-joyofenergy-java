@@ -30,4 +30,9 @@ public class PricePlan {
     public BigDecimal getPrice(LocalDateTime dateTime) {
         return unitRate;
     }
+
+    @Override
+    public String toString() {
+        return "Name: '" + planName + "', Unit Rate: " + unitRate + ", Supplier: '" + energySupplier + "'";
+    }
 }

@@ -35,4 +35,8 @@ public class PricePlanRepository {
         BigDecimal energyConsumed = latest.reading().subtract(oldest.reading());
         return energyConsumed.multiply(pricePlan.getUnitRate());
     }
+
+    public List<PricePlan> getAllPricePlans() {
+        return pricePlans;
+    }
 }

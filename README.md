@@ -1,39 +1,40 @@
 # Welcome to PowerDale
 
 PowerDale is a small town with around 100 residents. Most houses have a smart meter installed that can save and send
-information about how much energy a house has consumed.
+information about how much energy a house has consumed. Each household needs to sign up with one of the available power 
+suppliers, and choose a pricing plan offered by them. The household energy consumption is then charged based on the 
+selected pricing plan.
 
-There are three major power suppliers in town that charge different amounts for the power they supply.
+# Introducing JOI Energy
 
+JOI Energy is a new start-up in the energy industry. Rather than selling energy, they want to differentiate themselves
+from the market by recording their customers' energy usage from their smart meters and recommending the best supplier to
+meet their needs.
+
+This codebase currently implements the logic for storing and fetching energy consumptions reading from a smart meter, 
+as well as the logic to recommend the cheapest price plan for a particular household's energy consumption patterns.
+
+>Unfortunately, as the codebase has evolved, it has gathered tech debt in the form of a number of code smells and some 
+questionable design decisions. Our goal for the upcoming exercise would be to deliver value by implementing a new 
+feature using _Test Driven Development_ (TDD), while refactoring away the code smells we see. 
+> 
+>In preparation for this, please take some time to go through the code and identify any improvements, big or small, 
+that would improve its maintainability, testability, and design.
+
+## Initial Rollout
+
+There are three major power suppliers in town, each with their own pricing plans:
 - _Dr Evil's Dark Energy_
 - _The Green Eco_
 - _Power for Everyone_
 
-Each customer with a smart meter needs to sign up for one of the price plans offered by these suppliers.
-
-# Introducing JOI Energy
-
-JOI Energy is a new start-up in the energy industry. Rather than selling energy they want to differentiate themselves
-from the market by recording their customers' energy usage from their smart meters and recommending the best supplier to
-meet their needs.
-
-This codebase models and implements the logic for storing and fetching energy consumptions reading from a smart meter, 
-as well as the logic to recommend the cheapest price plan for a particular user's energy consumption patterns.
-
-Unfortunately, as the codebase has evolved, it has gathered a number of code smells and some questionable design decisions.
-Our goal with this exercise would be to deliver value by implementing a new feature, while at the same time improving the
-codebase by refactoring away any code smells we identify.
-
-## Users
-
-To trial the new JOI software 5 people from the JOI accounts team have agreed to test the service and share their energy
-data.
+To trial the new JOI software 5 residents have agreed to test the service and share their energy data.
 
 | User   | Smart Meter ID  | Power Supplier        |
 |--------|-----------------|-----------------------|
-| Sarah  | `smart-meter-0` | Dr Evil's Dark Energy |
+| Chitra | `smart-meter-0` | Dr Evil's Dark Energy |
 | Paolo  | `smart-meter-1` | The Green Eco         |
-| Chitra | `smart-meter-2` | Dr Evil's Dark Energy |
+| Sarah  | `smart-meter-2` | Dr Evil's Dark Energy |
 | Andrei | `smart-meter-3` | Power for Everyone    |
 | Jingyi | `smart-meter-4` | The Green Eco         |
 
@@ -58,12 +59,87 @@ $ ./gradlew test
 ```
 
 ### Sample run
-
+We provide a console application to manually test the implemented workflows with a set of sample data. 
+You can run it with the following command:
 ```console
 $ ./gradlew run
 ```
 
-## API
+## API Documentation
 
-TODO: add some documentation for the classes
+The codebase contains two service classes, _MeterReadingManager_ and _PricePlanComparator_, that serve as entry points to
+the implemented features.
 
+### MeterReadingManager
+Provides methods to read the energy consumption readings from a given Smart Meter, as well as save new readings to it.
+
+> #### _public void_ storeReadings(_String smartMeterId, List<ElectricityReading> electricityReadings_)
+Stores the provided _ElectricityReading_ collection in the indicated _SmartMeter_. If no 
+_SmartMeter_ with a matching ID is found, then a new one will be created.
+
+| Parameter             | Description                                                                 |
+|-----------------------|-----------------------------------------------------------------------------|
+| `smartMeterId`        | a valid smart meter id                                                      |
+| `electricityReadings` | a collection of _ElectricityReading_ entries for the referenced smart meter |
+
+An _ElectricityReading_ record consists of the following fields:
+
+| Parameter | Description                                                   |
+|-----------|---------------------------------------------------------------|
+| `time`    | The date/time instant (as epoch) when the _reading_ was taken |
+| `reading` | The total energy consumed so far, in kilowatt-hours (kWh)     |
+
+Example readings
+
+| Date (`GMT`)      | Epoch timestamp |   Reading (kWh) |
+|-------------------|----------------:|----------------:|
+| `2020-11-29 8:00` |      1606636800 |          0.0503 |
+| `2020-11-29 9:00` |      1606636860 |          0.0621 |
+| `2020-11-30 7:30` |      1606636920 |          0.0922 |
+| `2020-11-31 8:30` |      1606636980 |          0.1223 |
+| `2020-11-31 8:00` |      1606637040 |          0.1391 |
+
+Thee above table shows some readings sampled by a smart meter over multiple days. Note that since the smart 
+meter is reporting the total energy consumed up to that point in time, a reading's value will always be higher or the same as 
+the reading from a previous point in time.
+
+This method throws an exception if the provided _smartMeterId_ or _electricityReadings_ values are empty.
+
+> #### _public List&lt;ElectricityReading>_ readReadings(_String smartMeterId_)
+Returns an unsorted collection of _ElectricityReading_ values stored in the given _SmartMeter_.
+
+| Parameter             | Description                                                                 |
+|-----------------------|-----------------------------------------------------------------------------|
+| `smartMeterId`        | a valid smart meter id                                                      |
+
+This method throws an exception if the Smart Meter corresponding to the provided _smartMeterId_ cannot be found.
+
+
+### PricePlanComparator
+Provides methods to compare costs between the available pricing plans given a Smart Meter's energy consumption data.
+
+> public Map&lt;String, Object> calculatedCostForEachPricePlan(String smartMeterId)
+
+Returns a Map containing two entries. One is the ID of the current _PricePlan_ assigned to the given _SmartMeter_. The other
+is a map of the calculated energy consumption costs for each of the pricing plans.
+
+| Parameter             | Description                                                                 |
+|-----------------------|-----------------------------------------------------------------------------|
+| `smartMeterId`        | a valid smart meter id                                                      |
+
+This method throws an exception if the _SmartMeter_ corresponding to the provided _smartMeterId_ cannot be found.
+
+> public List&lt;Map.Entry<String, BigDecimal>> recommendCheapestPricePlans(String smartMeterId, Integer limit)
+
+Returns a list of the available priceplans mapped to the corresponding energy consumption cost calculation based on the 
+consumption readings from the provided Smart Meter.
+
+| Parameter      | Description                             |
+|----------------|-----------------------------------------|
+| `smartMeterId` | a valid smart meter id                  |
+| `limit`        | the maximum number of results to return |
+
+This method throws an exception if the _SmartMeter_ corresponding to the provided _smartMeterId_ cannot be found.
+
+
+---

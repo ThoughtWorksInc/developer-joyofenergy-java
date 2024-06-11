@@ -40,8 +40,8 @@ public class MeterReadingManagerTest {
 
     @Test
     public void givenMultipleBatchesOfMeterReadingsShouldStore() {
-        var meterReadings = new ElectricityReadingsGenerator().generate(5);
-        var otherMeterReadings = new ElectricityReadingsGenerator().generate(5);
+        var meterReadings = ElectricityReadingsGenerator.generate(5);
+        var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings(SMART_METER_ID, otherMeterReadings);
@@ -56,8 +56,8 @@ public class MeterReadingManagerTest {
 
     @Test
     public void givenMeterReadingsAssociatedWithTheUserShouldStoreAssociatedWithUser() {
-        var meterReadings = new ElectricityReadingsGenerator().generate(5);
-        var otherMeterReadings = new ElectricityReadingsGenerator().generate(5);
+        var meterReadings = ElectricityReadingsGenerator.generate(5);
+        var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings("00001", otherMeterReadings);

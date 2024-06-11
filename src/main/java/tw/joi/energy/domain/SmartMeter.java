@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SmartMeter {
     private final PricePlan pricePlan;
@@ -28,5 +29,11 @@ public class SmartMeter {
             return null;
         }
         return pricePlan.getPlanName();
+    }
+
+    @Override
+    public String toString() {
+        return "PricePlan=" + pricePlan + ", \n\tElectricityReadings:\n\t\t"
+                + electricityReadings.stream().map(ElectricityReading::toString).collect(Collectors.joining("\n\t\t"));
     }
 }

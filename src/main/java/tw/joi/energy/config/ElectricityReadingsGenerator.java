@@ -11,11 +11,11 @@ import tw.joi.energy.domain.ElectricityReading;
 
 public class ElectricityReadingsGenerator {
 
-    public List<ElectricityReading> generate(int number) {
+    public static List<ElectricityReading> generate(int number) {
         List<ElectricityReading> readings = new ArrayList<>();
         Instant now = Instant.now();
         BigDecimal previousReading = BigDecimal.ONE;
-        Instant previousReadingTime = now.minusSeconds(2 * number * 10L);
+        Instant previousReadingTime = now.minusSeconds(2 * number * 60L);
 
         Random readingRandomiser = new Random();
 
@@ -24,7 +24,7 @@ public class ElectricityReadingsGenerator {
             BigDecimal currentReading =
                     previousReading.add(BigDecimal.valueOf(positiveIncrement)).setScale(4, RoundingMode.CEILING);
             ElectricityReading electricityReading =
-                    new ElectricityReading(previousReadingTime.plusSeconds(i * 10L), currentReading);
+                    new ElectricityReading(previousReadingTime.plusSeconds(i * 60L), currentReading);
             readings.add(electricityReading);
             previousReading = currentReading;
         }
