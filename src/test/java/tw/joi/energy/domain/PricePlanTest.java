@@ -11,13 +11,11 @@ import org.junit.jupiter.api.Test;
 
 public class PricePlanTest {
 
-    private final String ENERGY_SUPPLIER_NAME = "Energy Supplier Name";
-
     @Test
     public void shouldReturnTheEnergySupplierGivenInTheConstructor() {
-        PricePlan pricePlan = new PricePlan(null, ENERGY_SUPPLIER_NAME, null, null);
+        PricePlan pricePlan = new PricePlan(null, "Energy Supplier Name", null, null);
 
-        assertThat(pricePlan.getEnergySupplier()).isEqualTo(ENERGY_SUPPLIER_NAME);
+        assertThat(pricePlan.getEnergySupplier()).isEqualTo("Energy Supplier Name");
     }
 
     @Test
@@ -28,5 +26,16 @@ public class PricePlanTest {
         BigDecimal price = pricePlan.getPrice(normalDateTime);
 
         assertThat(price).isCloseTo(BigDecimal.ONE, Percentage.withPercentage(1));
+    }
+
+    @Test
+    public void shouldReturnUnitPrice() {
+        PricePlan pricePlan = new PricePlan(null, null, BigDecimal.TWO, null);
+        pricePlan.setPlanName("test-price-plan");
+        pricePlan.setEnergySupplier("test-energy-supplier");
+
+        BigDecimal rate = pricePlan.getUnitRate();
+
+        assertThat(rate).isEqualTo(BigDecimal.TWO);
     }
 }

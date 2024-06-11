@@ -48,7 +48,7 @@ public class PricePlanComparatorTest {
         var response = controller.calculatedCostForEachPricePlan(SMART_METER_ID);
 
         Map<String, Object> expected = Map.of(
-                PricePlanComparator.PRICE_PLAN_ID_KEY,
+                "currentlyAssignedPricePlanId",
                 WORST_PLAN_ID,
                 PricePlanComparator.PRICE_PLAN_COMPARISONS_KEY,
                 Map.of(

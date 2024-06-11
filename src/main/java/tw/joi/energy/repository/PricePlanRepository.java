@@ -1,12 +1,14 @@
 package tw.joi.energy.repository;
 
 import static java.util.Comparator.*;
+import static java.util.stream.Collectors.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.regex.*;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
@@ -20,13 +22,11 @@ public class PricePlanRepository {
 
     public Map<String, BigDecimal> getConsumptionCostOfElectricityReadingsForEachPricePlan(SmartMeter smartMeter) {
         var electricityReadings = smartMeter.electricityReadings();
-
         return pricePlans.stream()
-                .collect(Collectors.toMap(
-                        PricePlan::getPlanName, pricePlan -> calculateCost(electricityReadings, pricePlan)));
+                .collect(toMap(plan -> plan.getPlanName(), pricePlan -> calculateCost(electricityReadings, pricePlan)));
     }
 
-    private BigDecimal calculateCost(List<ElectricityReading> electricityReadings, PricePlan pricePlan) {
+    private BigDecimal calculateCost(Collection<ElectricityReading> electricityReadings, PricePlan pricePlan) {
         var oldest = electricityReadings.stream()
                 .min(comparing(ElectricityReading::time))
                 .get();

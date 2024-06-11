@@ -24,6 +24,10 @@ public class SmartMeter {
         this.electricityReadings.addAll(electricityReadings);
     }
 
+    //    public void removeReadings(List<ElectricityReading> itemsToRemove) {
+    //        this.electricityReadings.removeAll(itemsToRemove);
+    //    }
+
     public String getPricePlanId() {
         if (null == pricePlan) {
             return null;

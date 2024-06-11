@@ -15,15 +15,13 @@ public class MeterReadingManager {
 
     public void storeReadings(String smartMeterId, List<ElectricityReading> electricityReadings) {
 
-        // check if given smartMeterId is valid
+        // is smartMeterId empty?
         if (smartMeterId == null || smartMeterId.isEmpty()) {
             throw new IllegalArgumentException("smartMeterId must be provided");
         }
 
-        // check if given electricityReadings are valid
-        if (electricityReadings == null || electricityReadings.isEmpty()) {
-            throw new IllegalArgumentException("electricity readings must be provided");
-        }
+        // is valid?
+        validateElectricityReadings(electricityReadings);
 
         // save
         Optional<SmartMeter> optionalSmartMeter = smartMeterRepository.findById(smartMeterId);
@@ -36,12 +34,19 @@ public class MeterReadingManager {
     }
 
     public List<ElectricityReading> readReadings(String smartMeterId) {
-        Optional<SmartMeter> optionalSmartMeter = smartMeterRepository.findById(smartMeterId);
-        if (optionalSmartMeter.isEmpty()) {
+        Optional<SmartMeter> sm = smartMeterRepository.findById(smartMeterId);
+        if (sm.isEmpty()) {
             throw new IllegalArgumentException("smartMeterId does not exist");
         } else {
-            SmartMeter smartMeter = optionalSmartMeter.get();
-            return smartMeter.electricityReadings();
+            SmartMeter smartMeter = sm.get();
+            var collection = smartMeter.electricityReadings();
+            return collection;
+        }
+    }
+
+    private static void validateElectricityReadings(List<ElectricityReading> electricityReadings) {
+        if (electricityReadings == null || electricityReadings.isEmpty()) {
+            throw new IllegalArgumentException("electricity readings must be provided");
         }
     }
 }

@@ -9,14 +9,14 @@ import tw.joi.energy.domain.SmartMeter;
 class SmartMeterRepositoryTest {
 
     @Test
-    void nonExistent() {
+    void shouldReturnEmptyRepositoryWhenGivenANonExistentId() {
         var repository = new SmartMeterRepository();
 
         assertThat(repository.findById("non-existent")).isEmpty();
     }
 
     @Test
-    void saveAndFindSmartMeters() {
+    void shouldSaveAndFindSmartMetersGivenAValidSmartMeterAndId() {
         var repository = new SmartMeterRepository();
         SmartMeter smartMeter0 = new SmartMeter(null, List.of());
         SmartMeter smartMeter1 = new SmartMeter(null, List.of());

@@ -29,6 +29,10 @@ application {
     mainClass = "tw.joi.energy.App"
 }
 
+tasks.withType<JavaCompile>() {
+    this.options.isDeprecation = true
+}
+
 tasks.named<Test>("test") {
     useJUnitPlatform()
 

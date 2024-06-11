@@ -12,19 +12,19 @@ import tw.joi.energy.repository.SmartMeterRepository;
 
 public class PricePlanComparator {
 
-    public static final String PRICE_PLAN_ID_KEY = "currentlyAssignedPricePlanId";
     public static final String PRICE_PLAN_COMPARISONS_KEY = "pricePlanComparisons";
     private final PricePlanRepository pricePlanRepository;
     private final SmartMeterRepository smartMeterRepository;
 
-    public PricePlanComparator(PricePlanRepository pricePlanRepository, SmartMeterRepository smartMeterRepository) {
-        this.pricePlanRepository = pricePlanRepository;
-        this.smartMeterRepository = smartMeterRepository;
+    public PricePlanComparator(PricePlanRepository ppr, SmartMeterRepository smr) {
+        this.pricePlanRepository = ppr;
+        this.smartMeterRepository = smr;
     }
 
     public Map<String, Object> calculatedCostForEachPricePlan(String smartMeterId) {
         Optional<SmartMeter> optionalSmartMeter = smartMeterRepository.findById(smartMeterId);
         if (optionalSmartMeter.isEmpty()) {
+            // the id was not provided
             throw new RuntimeException("missing args");
         }
         SmartMeter smartMeter = optionalSmartMeter.get();
@@ -34,14 +34,14 @@ public class PricePlanComparator {
                 pricePlanRepository.getConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeter);
 
         Map<String, Object> pricePlanComparisons = new HashMap<>();
-        pricePlanComparisons.put(PRICE_PLAN_ID_KEY, pricePlanId);
+        pricePlanComparisons.put("currentlyAssignedPricePlanId", pricePlanId);
         pricePlanComparisons.put(PRICE_PLAN_COMPARISONS_KEY, consumptionsForPricePlans);
         return pricePlanComparisons;
     }
 
     public List<Map.Entry<String, BigDecimal>> recommendCheapestPricePlans(String smartMeterId, Integer limit) {
         Optional<SmartMeter> optionalSmartMeter = smartMeterRepository.findById(smartMeterId);
-        if (optionalSmartMeter.isEmpty()) {
+        if (!optionalSmartMeter.isPresent()) {
             throw new RuntimeException("missing args");
         }
         SmartMeter smartMeter = optionalSmartMeter.get();
