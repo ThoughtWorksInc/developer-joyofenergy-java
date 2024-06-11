@@ -12,7 +12,7 @@ import tw.joi.energy.repository.SmartMeterRepository;
 
 public class PricePlanComparator {
 
-    public static final String PRICE_PLAN_ID_KEY = "pricePlanId";
+    public static final String PRICE_PLAN_ID_KEY = "currentlyAssignedPricePlanId";
     public static final String PRICE_PLAN_COMPARISONS_KEY = "pricePlanComparisons";
     private final PricePlanRepository pricePlanRepository;
     private final SmartMeterRepository smartMeterRepository;

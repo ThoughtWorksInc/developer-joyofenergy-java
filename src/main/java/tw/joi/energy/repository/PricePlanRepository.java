@@ -1,7 +1,9 @@
 package tw.joi.energy.repository;
 
+import static java.util.Comparator.*;
+
 import java.math.BigDecimal;
-import java.util.Comparator;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,14 +28,14 @@ public class PricePlanRepository {
 
     private BigDecimal calculateCost(List<ElectricityReading> electricityReadings, PricePlan pricePlan) {
         var oldest = electricityReadings.stream()
-                .min(Comparator.comparing(ElectricityReading::time))
+                .min(comparing(ElectricityReading::time))
                 .get();
         var latest = electricityReadings.stream()
-                .max(Comparator.comparing(ElectricityReading::time))
+                .max(comparing(ElectricityReading::time))
                 .get();
 
         BigDecimal energyConsumed = latest.reading().subtract(oldest.reading());
-        return energyConsumed.multiply(pricePlan.getUnitRate());
+        return energyConsumed.multiply(pricePlan.getPrice(LocalDateTime.now()));
     }
 
     public List<PricePlan> getAllPricePlans() {

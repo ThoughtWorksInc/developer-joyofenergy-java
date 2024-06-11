@@ -58,7 +58,7 @@ public class App {
 
     private static void printAllAvailablePricePlans(PricePlanRepository pricePlanRepository) {
         System.out.println("\nAvailable price plans:");
-        pricePlanRepository.getAllPricePlans().forEach(System.out::println);
+        pricePlanRepository.getAllPricePlans().forEach(p -> System.out.println("\t" + p));
         System.out.println();
     }
 }
