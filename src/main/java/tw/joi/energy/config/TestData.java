@@ -1,7 +1,8 @@
 package tw.joi.energy.config;
 
+import static java.util.Collections.emptyList;
+
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
@@ -11,15 +12,15 @@ import tw.joi.energy.repository.SmartMeterRepository;
 public final class TestData {
 
     private static final PricePlan MOST_EVIL_PRICE_PLAN =
-            new PricePlan("price-plan-0", "Dr Evil's Dark Energy", BigDecimal.TEN);
+            new PricePlan("price-plan-0", "Dr Evil's Dark Energy", BigDecimal.TEN, emptyList());
     private static final PricePlan RENEWABLES_PRICE_PLAN =
-            new PricePlan("price-plan-1", "The Green Eco", BigDecimal.valueOf(2));
+            new PricePlan("price-plan-1", "The Green Eco", BigDecimal.valueOf(2), null);
     private static final PricePlan STANDARD_PRICE_PLAN =
-            new PricePlan("price-plan-2", "Power for Everyone", BigDecimal.ONE);
+            new PricePlan("price-plan-2", "Power for Everyone", BigDecimal.ONE, emptyList());
 
     public static SmartMeterRepository smartMeterRepository() {
         var smartMeterRepository = new SmartMeterRepository();
-        smartMeterRepository.save("smart-meter-0", new SmartMeter(MOST_EVIL_PRICE_PLAN, Collections.emptyList()));
+        smartMeterRepository.save("smart-meter-0", new SmartMeter(MOST_EVIL_PRICE_PLAN, emptyList()));
         smartMeterRepository.save(
                 "smart-meter-1", new SmartMeter(RENEWABLES_PRICE_PLAN, ElectricityReadingsGenerator.generate(7)));
         smartMeterRepository.save(

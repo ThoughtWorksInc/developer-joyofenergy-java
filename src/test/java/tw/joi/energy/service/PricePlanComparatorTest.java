@@ -1,5 +1,6 @@
 package tw.joi.energy.service;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -26,9 +27,9 @@ public class PricePlanComparatorTest {
 
     @BeforeEach
     public void setUp() {
-        WORST_PLAN = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN);
-        PricePlan pricePlan2 = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE);
-        PricePlan pricePlan3 = new PricePlan(SECOND_BEST_PLAN_ID, null, BigDecimal.valueOf(2));
+        WORST_PLAN = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN, emptyList());
+        PricePlan pricePlan2 = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE, emptyList());
+        PricePlan pricePlan3 = new PricePlan(SECOND_BEST_PLAN_ID, null, BigDecimal.valueOf(2), emptyList());
         List<PricePlan> pricePlans = List.of(WORST_PLAN, pricePlan2, pricePlan3);
         PricePlanRepository pricePlanRepository = new PricePlanRepository(pricePlans);
 
