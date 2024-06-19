@@ -1,13 +1,5 @@
 package tw.joi.energy.service;
 
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tw.joi.energy.domain.ElectricityReading;
@@ -15,6 +7,15 @@ import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
 import tw.joi.energy.repository.PricePlanRepository;
 import tw.joi.energy.repository.SmartMeterRepository;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PricePlanComparatorTest {
     private static final String WORST_PLAN_ID = "worst-supplier";
@@ -38,7 +39,7 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void calculatedCostForEachPricePlan_happyPath() {
+    public void calculated_cost_for_each_price_plan_happy_path() {
         List<ElectricityReading> readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(5.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(15.0)));
@@ -59,14 +60,14 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void calculatedCostForEachPricePlan_noReadings() {
+    public void calculated_cost_for_each_price_plan_no_readings() {
         assertThatThrownBy(() -> controller.calculatedCostForEachPricePlan("not-found"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("args");
     }
 
     @Test
-    public void recommendCheapestPricePlans_noLimit() {
+    public void recommend_cheapest_price_plans_no_limit() {
         var readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(1800), BigDecimal.valueOf(3.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(35.0)));
@@ -83,7 +84,7 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void recommendCheapestPricePlans_withLimit() {
+    public void recommend_cheapest_price_plans_with_limit() {
         var readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(2700), BigDecimal.valueOf(5.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(20.0)));
@@ -99,7 +100,7 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void recommendCheapestPricePlans_limitHigherThanNumberOfEntries() {
+    public void recommend_cheapest_price_plans_limit_higher_than_number_of_entries() {
         var readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(3.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(25.0)));

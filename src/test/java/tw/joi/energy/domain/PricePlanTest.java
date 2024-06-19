@@ -1,25 +1,26 @@
 package tw.joi.energy.domain;
 
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import org.assertj.core.data.Percentage;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-import org.assertj.core.data.Percentage;
-import org.junit.jupiter.api.Test;
+
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class PricePlanTest {
 
     @Test
-    public void shouldReturnTheEnergySupplierGivenInTheConstructor() {
+    public void should_return_the_energy_supplier_given_in_the_constructor() {
         PricePlan pricePlan = new PricePlan(null, "Energy Supplier Name", null, null);
 
         assertThat(pricePlan.getEnergySupplier()).isEqualTo("Energy Supplier Name");
     }
 
     @Test
-    public void shouldReturnTheBasePriceGivenAnOrdinaryDateTime() throws Exception {
+    public void should_return_the_base_price_given_an_ordinary_date_time() throws Exception {
         LocalDateTime normalDateTime = LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0);
         PricePlan pricePlan = new PricePlan(null, null, BigDecimal.ONE, emptyList());
 
@@ -29,7 +30,7 @@ public class PricePlanTest {
     }
 
     @Test
-    public void shouldReturnUnitPrice() {
+    public void should_return_unit_price() {
         PricePlan pricePlan = new PricePlan(null, null, BigDecimal.TWO, null);
         pricePlan.setPlanName("test-price-plan");
         pricePlan.setEnergySupplier("test-energy-supplier");

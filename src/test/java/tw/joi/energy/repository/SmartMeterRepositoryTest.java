@@ -1,22 +1,23 @@
 package tw.joi.energy.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import tw.joi.energy.domain.SmartMeter;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SmartMeterRepositoryTest {
 
     @Test
-    void shouldReturnEmptyRepositoryWhenGivenANonExistentId() {
+    void should_return_empty_repository_when_given_anon_existent_id() {
         var repository = new SmartMeterRepository();
 
         assertThat(repository.findById("non-existent")).isEmpty();
     }
 
     @Test
-    void shouldSaveAndFindSmartMetersGivenAValidSmartMeterAndId() {
+    void should_save_and_find_smart_meters_given_avalid_smart_meter_and_id() {
         var repository = new SmartMeterRepository();
         SmartMeter smartMeter0 = new SmartMeter(null, List.of());
         SmartMeter smartMeter1 = new SmartMeter(null, List.of());
