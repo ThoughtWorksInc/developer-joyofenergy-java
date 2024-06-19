@@ -1,6 +1,8 @@
 package tw.joi.energy.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import tw.joi.energy.config.ElectricityReadingsGenerator;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.repository.SmartMeterRepository;
@@ -19,28 +21,23 @@ public class MeterReadingManagerTest {
     private final MeterReadingManager meterReadingManager = new MeterReadingManager(smartMeterRepository);
 
     @Test
-    public void given_no_meter_id_is_supplied_when_storing_should_throw_exception() {
+    public void should_throw_exception_when_store_readings_given_no_meter_id_is_supplied() {
         assertThatThrownBy(() -> meterReadingManager.storeReadings(null, Collections.emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
     }
 
-    @Test
-    public void given_empty_meter_reading_should_return_error_response() {
-        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, Collections.emptyList()))
+    @ParameterizedTest(name = "should_throw_exception_when_store_readings_given_readings_are_{0}")
+    @NullAndEmptySource
+    public void should_throw_exception_when_store_readings_given_no_readings_are_supplied(
+            List<ElectricityReading> electricityReadings) {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, electricityReadings))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("readings");
     }
 
     @Test
-    public void given_null_readings_are_supplied_when_storing_should_return_error_response() {
-        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("readings");
-    }
-
-    @Test
-    public void given_multiple_batches_of_meter_readings_should_store() {
+    public void should_store_readings_successfully_when_store_readings_given_multiple_batches_of_meter_readings() {
         var meterReadings = ElectricityReadingsGenerator.generate(5);
         var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
 
@@ -56,7 +53,7 @@ public class MeterReadingManagerTest {
     }
 
     @Test
-    public void given_meter_readings_associated_with_the_user_should_store_associated_with_user() {
+    public void should_store_readings_to_associated_smart_meter_when_store_reading_given_meter_readings_associated_to_different_smart_meters() {
         var meterReadings = ElectricityReadingsGenerator.generate(5);
         var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
 
@@ -68,7 +65,7 @@ public class MeterReadingManagerTest {
     }
 
     @Test
-    public void given_meter_id_that_is_not_recognised_should_return_not_found() {
+    public void should_throw_exception_when_read_readings_given_meter_id_is_not_existent() {
         assertThatThrownBy(() -> meterReadingManager.readReadings(SMART_METER_ID))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");

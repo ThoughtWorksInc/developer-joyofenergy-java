@@ -13,14 +13,14 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 public class PricePlanTest {
 
     @Test
-    public void should_return_the_energy_supplier_given_in_the_constructor() {
+    public void should_return_the_energy_supplier_when_get_energy_supplier_given_supplier_is_present() {
         PricePlan pricePlan = new PricePlan(null, "Energy Supplier Name", null, null);
 
         assertThat(pricePlan.getEnergySupplier()).isEqualTo("Energy Supplier Name");
     }
 
     @Test
-    public void should_return_the_base_price_given_an_ordinary_date_time() throws Exception {
+    public void should_return_the_base_price_when_get_price_given_an_ordinary_date_time() throws Exception {
         LocalDateTime normalDateTime = LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0);
         PricePlan pricePlan = new PricePlan(null, null, BigDecimal.ONE, emptyList());
 
@@ -30,7 +30,7 @@ public class PricePlanTest {
     }
 
     @Test
-    public void should_return_unit_price() {
+    public void should_return_unit_price_when_get_unit_rate_given_unit_rate_is_present() {
         PricePlan pricePlan = new PricePlan(null, null, BigDecimal.TWO, null);
         pricePlan.setPlanName("test-price-plan");
         pricePlan.setEnergySupplier("test-energy-supplier");

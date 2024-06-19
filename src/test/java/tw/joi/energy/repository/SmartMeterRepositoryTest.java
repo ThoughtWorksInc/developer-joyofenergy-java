@@ -10,14 +10,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SmartMeterRepositoryTest {
 
     @Test
-    void should_return_empty_repository_when_given_anon_existent_id() {
+    void should_return_empty_smart_meter_when_find_by_id_given_a_non_existent_id() {
         var repository = new SmartMeterRepository();
 
         assertThat(repository.findById("non-existent")).isEmpty();
     }
 
     @Test
-    void should_save_and_find_smart_meters_given_avalid_smart_meter_and_id() {
+    void should_return_smart_meters_when_find_by_id_given_existent_smart_meter_ids() {
         var repository = new SmartMeterRepository();
         SmartMeter smartMeter0 = new SmartMeter(null, List.of());
         SmartMeter smartMeter1 = new SmartMeter(null, List.of());

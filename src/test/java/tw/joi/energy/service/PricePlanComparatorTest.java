@@ -39,7 +39,7 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void calculated_cost_for_each_price_plan_happy_path() {
+    public void should_return_all_price_plans_costs_when_calculated_cost_for_each_price_plan_given_readings_and_price_plans() {
         List<ElectricityReading> readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(5.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(15.0)));
@@ -60,14 +60,14 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void calculated_cost_for_each_price_plan_no_readings() {
+    public void should_throw_exception_when_calculated_cost_for_each_price_plan_given_no_readings() {
         assertThatThrownBy(() -> controller.calculatedCostForEachPricePlan("not-found"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("args");
     }
 
     @Test
-    public void recommend_cheapest_price_plans_no_limit() {
+    public void should_return_all_costs_when_recommend_cheapest_price_plans_given_no_limit() {
         var readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(1800), BigDecimal.valueOf(3.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(35.0)));
@@ -84,7 +84,7 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void recommend_cheapest_price_plans_with_limit() {
+    public void should_return_top_2_cheapest_costs_when_recommend_cheapest_price_plans_given_limit_is_2() {
         var readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(2700), BigDecimal.valueOf(5.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(20.0)));
@@ -100,7 +100,7 @@ public class PricePlanComparatorTest {
     }
 
     @Test
-    public void recommend_cheapest_price_plans_limit_higher_than_number_of_entries() {
+    public void should_return_all_costs_when_recommend_cheapest_price_plans_given_limit_is_bigger_than_count_of_price_plans() {
         var readings = List.of(
                 new ElectricityReading(Instant.now().minusSeconds(3600), BigDecimal.valueOf(3.0)),
                 new ElectricityReading(Instant.now(), BigDecimal.valueOf(25.0)));

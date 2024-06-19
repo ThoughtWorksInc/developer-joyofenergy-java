@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SmartMeterTest {
 
     @Test
-    void should_return_null_price_plan_id_when_no_price_plan_has_been_provided() {
+    void should_return_null_when_get_price_plan_id_given_no_price_plan_has_been_provided() {
         var smartMeter = new SmartMeter(null, Collections.emptyList());
 
         var pricePlanId = smartMeter.getPricePlanId();
