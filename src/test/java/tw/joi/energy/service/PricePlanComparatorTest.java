@@ -22,7 +22,7 @@ public class PricePlanComparatorTest {
     private static final String BEST_PLAN_ID = "best-supplier";
     private static final String SECOND_BEST_PLAN_ID = "second-best-supplier";
     private static final String SMART_METER_ID = "smart-meter-id";
-    private PricePlanComparator controller;
+    private PricePlanComparator comparator;
     private SmartMeterRepository smartMeterRepository;
     private PricePlan WORST_PLAN;
 
@@ -35,7 +35,7 @@ public class PricePlanComparatorTest {
         PricePlanRepository pricePlanRepository = new PricePlanRepository(pricePlans);
 
         smartMeterRepository = new SmartMeterRepository();
-        controller = new PricePlanComparator(pricePlanRepository, smartMeterRepository);
+        comparator = new PricePlanComparator(pricePlanRepository, smartMeterRepository);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class PricePlanComparatorTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        var response = controller.calculatedCostForEachPricePlan(SMART_METER_ID);
+        var response = comparator.calculatedCostForEachPricePlan(SMART_METER_ID);
 
         Map<String, Object> expected = Map.of(
                 "currentlyAssignedPricePlanId",
@@ -61,7 +61,7 @@ public class PricePlanComparatorTest {
 
     @Test
     public void should_throw_exception_when_calculated_cost_for_each_price_plan_given_no_readings() {
-        assertThatThrownBy(() -> controller.calculatedCostForEachPricePlan("not-found"))
+        assertThatThrownBy(() -> comparator.calculatedCostForEachPricePlan("not-found"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("args");
     }
@@ -74,7 +74,7 @@ public class PricePlanComparatorTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        var response = controller.recommendCheapestPricePlans(SMART_METER_ID, null);
+        var response = comparator.recommendCheapestPricePlans(SMART_METER_ID, null);
 
         var expectedPricePlanToCost = List.of(
                 Map.entry(BEST_PLAN_ID, BigDecimal.valueOf(32.0)),
@@ -91,7 +91,7 @@ public class PricePlanComparatorTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        var response = controller.recommendCheapestPricePlans(SMART_METER_ID, 2);
+        var response = comparator.recommendCheapestPricePlans(SMART_METER_ID, 2);
 
         var expectedPricePlanToCost = List.of(
                 Map.entry(BEST_PLAN_ID, BigDecimal.valueOf(15.0)),
@@ -107,7 +107,7 @@ public class PricePlanComparatorTest {
         var smartMeter = new SmartMeter(WORST_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
 
-        var response = controller.recommendCheapestPricePlans(SMART_METER_ID, 5);
+        var response = comparator.recommendCheapestPricePlans(SMART_METER_ID, 5);
 
         var expectedPricePlanToCost = List.of(
                 Map.entry(BEST_PLAN_ID, BigDecimal.valueOf(22.0)),
