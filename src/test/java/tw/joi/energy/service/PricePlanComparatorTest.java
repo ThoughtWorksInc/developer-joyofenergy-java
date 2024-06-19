@@ -115,4 +115,11 @@ public class PricePlanComparatorTest {
                 Map.entry(WORST_PLAN_ID, BigDecimal.valueOf(220.0)));
         assertThat(response).isEqualTo(expectedPricePlanToCost);
     }
+
+    @Test
+    public void should_throw_exception_when_recommend_cheapest_price_plans_given_smart_meter_is_not_existent() {
+        assertThatThrownBy(()->comparator.recommendCheapestPricePlans("not_existent_id", null))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("missing args");
+    }
 }

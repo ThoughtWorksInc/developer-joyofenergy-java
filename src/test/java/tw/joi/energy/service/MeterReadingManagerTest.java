@@ -20,9 +20,10 @@ public class MeterReadingManagerTest {
     private final SmartMeterRepository smartMeterRepository = new SmartMeterRepository();
     private final MeterReadingManager meterReadingManager = new MeterReadingManager(smartMeterRepository);
 
-    @Test
-    public void should_throw_exception_when_store_readings_given_no_meter_id_is_supplied() {
-        assertThatThrownBy(() -> meterReadingManager.storeReadings(null, Collections.emptyList()))
+    @ParameterizedTest(name = "should_throw_exception_when_store_readings_given_meter_id_is_[{0}]")
+    @NullAndEmptySource
+    public void should_throw_exception_when_store_readings_given_no_meter_id_is_supplied(String smartMeterId) {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings(smartMeterId, Collections.emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
     }
@@ -69,5 +70,15 @@ public class MeterReadingManagerTest {
         assertThatThrownBy(() -> meterReadingManager.readReadings(SMART_METER_ID))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
+    }
+
+    @Test
+    public void should_return_readings_when_read_readings_given_readings_are_existent() {
+        //given
+        var meterReadings = ElectricityReadingsGenerator.generate(5);
+        meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
+        //expect
+        assertThat(meterReadingManager.readReadings(SMART_METER_ID))
+                .isEqualTo(meterReadings);
     }
 }
