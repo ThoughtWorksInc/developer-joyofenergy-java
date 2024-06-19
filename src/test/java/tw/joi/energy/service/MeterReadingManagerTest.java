@@ -1,16 +1,14 @@
 package tw.joi.energy.service;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import tw.joi.energy.config.ElectricityReadingsGenerator;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.repository.SmartMeterRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -20,19 +18,30 @@ public class MeterReadingManagerTest {
     private final SmartMeterRepository smartMeterRepository = new SmartMeterRepository();
     private final MeterReadingManager meterReadingManager = new MeterReadingManager(smartMeterRepository);
 
-    @ParameterizedTest(name = "should_throw_exception_when_store_readings_given_meter_id_is_[{0}]")
-    @NullAndEmptySource
-    public void should_throw_exception_when_store_readings_given_no_meter_id_is_supplied(String smartMeterId) {
-        assertThatThrownBy(() -> meterReadingManager.storeReadings(smartMeterId, Collections.emptyList()))
+    @Test
+    public void should_throw_exception_when_store_readings_given_meter_id_is_null() {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings(null, emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
     }
 
-    @ParameterizedTest(name = "should_throw_exception_when_store_readings_given_readings_are_{0}")
-    @NullAndEmptySource
-    public void should_throw_exception_when_store_readings_given_no_readings_are_supplied(
-            List<ElectricityReading> electricityReadings) {
-        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, electricityReadings))
+    @Test
+    public void should_throw_exception_when_store_readings_given_meter_id_is_empty() {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings("", emptyList()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("smartMeterId");
+    }
+
+    @Test
+    public void should_throw_exception_when_store_readings_given_readings_is_null() {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("readings");
+    }
+
+    @Test
+    public void should_throw_exception_when_store_readings_given_readings_is_empty() {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("readings");
     }
