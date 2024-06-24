@@ -1,15 +1,16 @@
 package tw.joi.energy.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import tw.joi.energy.config.ElectricityReadingsGenerator;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.repository.SmartMeterRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class MeterReadingManagerTest {
 
@@ -18,28 +19,35 @@ public class MeterReadingManagerTest {
     private final MeterReadingManager meterReadingManager = new MeterReadingManager(smartMeterRepository);
 
     @Test
-    public void givenNoMeterIdIsSuppliedWhenStoringShouldThrowException() {
-        assertThatThrownBy(() -> meterReadingManager.storeReadings(null, Collections.emptyList()))
+    public void should_throw_exception_when_store_readings_given_meter_id_is_null() {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings(null, emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
     }
 
     @Test
-    public void givenEmptyMeterReadingShouldReturnErrorResponse() {
-        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, Collections.emptyList()))
+    public void should_throw_exception_when_store_readings_given_meter_id_is_empty() {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings("", emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("readings");
+                .hasMessageContaining("smartMeterId");
     }
 
     @Test
-    public void givenNullReadingsAreSuppliedWhenStoringShouldReturnErrorResponse() {
+    public void should_throw_exception_when_store_readings_given_readings_is_null() {
         assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("readings");
     }
 
     @Test
-    public void givenMultipleBatchesOfMeterReadingsShouldStore() {
+    public void should_throw_exception_when_store_readings_given_readings_is_empty() {
+        assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, emptyList()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("readings");
+    }
+
+    @Test
+    public void should_store_readings_successfully_when_store_readings_given_multiple_batches_of_meter_readings() {
         var meterReadings = ElectricityReadingsGenerator.generate(5);
         var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
 
@@ -55,7 +63,7 @@ public class MeterReadingManagerTest {
     }
 
     @Test
-    public void givenMeterReadingsAssociatedWithTheUserShouldStoreAssociatedWithUser() {
+    public void should_store_readings_to_associated_smart_meter_when_store_reading_given_meter_readings_associated_to_different_smart_meters() {
         var meterReadings = ElectricityReadingsGenerator.generate(5);
         var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
 
@@ -67,9 +75,19 @@ public class MeterReadingManagerTest {
     }
 
     @Test
-    public void givenMeterIdThatIsNotRecognisedShouldReturnNotFound() {
+    public void should_throw_exception_when_read_readings_given_meter_id_is_not_existent() {
         assertThatThrownBy(() -> meterReadingManager.readReadings(SMART_METER_ID))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
+    }
+
+    @Test
+    public void should_return_readings_when_read_readings_given_readings_are_existent() {
+        //given
+        var meterReadings = ElectricityReadingsGenerator.generate(5);
+        meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
+        //expect
+        assertThat(meterReadingManager.readReadings(SMART_METER_ID))
+                .isEqualTo(meterReadings);
     }
 }
