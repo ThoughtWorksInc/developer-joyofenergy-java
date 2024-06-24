@@ -1,14 +1,13 @@
 package tw.joi.energy.domain;
 
-import org.assertj.core.data.Percentage;
-import org.junit.jupiter.api.Test;
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import org.assertj.core.data.Percentage;
+import org.junit.jupiter.api.Test;
 
 public class PricePlanTest {
 
