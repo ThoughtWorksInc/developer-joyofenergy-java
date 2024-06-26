@@ -1,15 +1,17 @@
 package tw.joi.energy.service;
 
+import org.junit.jupiter.api.Test;
+import tw.joi.energy.domain.ElectricityReading;
+import tw.joi.energy.repository.SmartMeterRepository;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import tw.joi.energy.config.ElectricityReadingsGenerator;
-import tw.joi.energy.domain.ElectricityReading;
-import tw.joi.energy.repository.SmartMeterRepository;
+import static tw.joi.energy.fixture.ElectricityReadingFixture.createReading;
 
 public class MeterReadingManagerTest {
 
@@ -47,7 +49,7 @@ public class MeterReadingManagerTest {
 
     @Test
     public void should_store_readings_successfully_when_store_readings_given_collection_of_meter_readings() {
-        var readingsToStore = ElectricityReadingsGenerator.generate(5);
+        var readingsToStore = List.of(createReading(LocalDate.now(), 1.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, readingsToStore);
 
@@ -57,8 +59,8 @@ public class MeterReadingManagerTest {
 
     @Test
     public void should_store_readings_successfully_when_store_readings_given_multiple_batches_of_meter_readings() {
-        var meterReadings = ElectricityReadingsGenerator.generate(5);
-        var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
+        var meterReadings = List.of(createReading(LocalDate.now(), 1.0));
+        var otherMeterReadings = List.of(createReading(LocalDate.now(), 2.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings(SMART_METER_ID, otherMeterReadings);
@@ -74,8 +76,8 @@ public class MeterReadingManagerTest {
     @Test
     public void
             should_store_readings_to_associated_smart_meter_when_store_reading_given_meter_readings_associated_to_different_smart_meters() {
-        var meterReadings = ElectricityReadingsGenerator.generate(5);
-        var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
+        var meterReadings = List.of(createReading(LocalDate.now(), 1.0));
+        var otherMeterReadings = List.of(createReading(LocalDate.now(), 2.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings("00001", otherMeterReadings);
@@ -94,7 +96,7 @@ public class MeterReadingManagerTest {
     @Test
     public void should_return_readings_when_read_readings_given_readings_are_existent() {
         // given
-        var meterReadings = ElectricityReadingsGenerator.generate(5);
+        var meterReadings = List.of(createReading(LocalDate.now(), 1.0));
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         // expect
         assertThat(meterReadingManager.readReadings(SMART_METER_ID)).isEqualTo(meterReadings);
