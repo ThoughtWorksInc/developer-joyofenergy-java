@@ -46,6 +46,16 @@ public class MeterReadingManagerTest {
     }
 
     @Test
+    public void should_store_readings_successfully_when_store_readings_given_collection_of_meter_readings() {
+        var readingsToStore = ElectricityReadingsGenerator.generate(5);
+
+        meterReadingManager.storeReadings(SMART_METER_ID, readingsToStore);
+
+        var storedReadings = smartMeterRepository.findById(SMART_METER_ID).get().electricityReadings();
+        assertThat(storedReadings).isEqualTo(readingsToStore);
+    }
+
+    @Test
     public void should_store_readings_successfully_when_store_readings_given_multiple_batches_of_meter_readings() {
         var meterReadings = ElectricityReadingsGenerator.generate(5);
         var otherMeterReadings = ElectricityReadingsGenerator.generate(5);
