@@ -1,14 +1,15 @@
 package tw.joi.energy.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SmartMeterTest {
 
     @Test
-    void should_return_null_when_get_price_plan_id_given_no_price_plan_has_been_provided() {
+    void price_plan_id_should_be_null_given_no_price_plan_has_been_provided() {
         var smartMeter = new SmartMeter(null, Collections.emptyList());
 
         var pricePlanId = smartMeter.getPricePlanId();
