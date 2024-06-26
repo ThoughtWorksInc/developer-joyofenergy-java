@@ -11,7 +11,7 @@ JOI Energy is a new start-up in the energy industry. Rather than selling energy,
 from the market by recording their customers' energy usage from their smart meters and recommending the best supplier to
 meet their needs.
 
-This codebase currently implements the logic for storing and fetching energy consumptions reading from a smart meter, 
+This codebase currently implements the logic for storing and fetching energy consumption readings from a smart meter, 
 as well as the logic to recommend the cheapest price plan for a particular household's energy consumption patterns.
 
 >Unfortunately, as the codebase has evolved, it has gathered tech debt in the form of a number of code smells and some 
@@ -71,7 +71,7 @@ The codebase contains two service classes, _MeterReadingManager_ and _PricePlanC
 the implemented features.
 
 ### MeterReadingManager
-Provides methods to read the energy consumption readings from a given Smart Meter, as well as save new readings to it.
+Provides methods to store and fetch the energy consumption readings from a given Smart Meter
 
 > #### _public void_ storeReadings(_String smartMeterId, List<ElectricityReading> electricityReadings_)
 Stores the provided _ElectricityReading_ collection in the indicated _SmartMeter_. If no 
@@ -116,23 +116,13 @@ This method throws an exception if the Smart Meter corresponding to the provided
 
 
 ### PricePlanComparator
-Provides methods to compare costs between the available pricing plans given a Smart Meter's energy consumption data.
-
-> public Map&lt;String, Object> calculatedCostForEachPricePlan(String smartMeterId)
-
-Returns a Map containing two entries. One is the ID of the current _PricePlan_ assigned to the given _SmartMeter_. The other
-is a map of the calculated energy consumption costs for each of the pricing plans.
-
-| Parameter             | Description                                                                 |
-|-----------------------|-----------------------------------------------------------------------------|
-| `smartMeterId`        | a valid smart meter id                                                      |
-
-This method throws an exception if the _SmartMeter_ corresponding to the provided _smartMeterId_ cannot be found.
+Provides price plan recommendations
 
 > public List&lt;Map.Entry<String, BigDecimal>> recommendCheapestPricePlans(String smartMeterId, Integer limit)
 
-Returns a list of the available priceplans mapped to the corresponding energy consumption cost calculation based on the 
-consumption readings from the provided Smart Meter.
+Returns a list of the available price plans mapped to their corresponding energy consumption cost, calculated 
+based on the energy consumption readings from the provided Smart Meter. This list is limit to the number of items 
+provided by the 'limit' parameter.
 
 | Parameter      | Description                             |
 |----------------|-----------------------------------------|

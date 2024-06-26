@@ -32,9 +32,6 @@ public class App {
         var storedReadings = meterReadingManager.readReadings(TEST_SMART_METER);
         System.out.println("\nReadings retrieved from '" + TEST_SMART_METER + "':\n\t" + storedReadings);
 
-        var pricePlanComparisons = pricePlanComparator.calculatedCostForEachPricePlan(TEST_SMART_METER);
-        printComparison(pricePlanComparisons);
-
         var cheapestPricePlans = pricePlanComparator.recommendCheapestPricePlans(TEST_SMART_METER, RESULTS_COUNT_LIMIT);
         printCheapestPlans(cheapestPricePlans);
     }
@@ -42,11 +39,6 @@ public class App {
     private static void printCheapestPlans(List<Map.Entry<String, BigDecimal>> cheapestPricePlans) {
         System.out.println("\nTop " + RESULTS_COUNT_LIMIT + " cheapest price plans for '" + TEST_SMART_METER + "':");
         System.out.println("\t" + cheapestPricePlans);
-    }
-
-    private static void printComparison(Map<String, Object> pricePlanComparisons) {
-        System.out.println("\nPrice plan comparisons for '" + TEST_SMART_METER + "',: ");
-        System.out.println("\t" + pricePlanComparisons);
     }
 
     private static void printSmartMeterInformation(SmartMeterRepository smartMeterRepository, String description) {

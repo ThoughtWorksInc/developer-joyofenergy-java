@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
 import tw.joi.energy.repository.PricePlanRepository;
@@ -31,33 +30,6 @@ public class PricePlanComparatorTest {
 
         smartMeterRepository = new SmartMeterRepository();
         comparator = new PricePlanComparator(pricePlanRepository, smartMeterRepository);
-    }
-
-    @Test
-    public void
-            should_return_all_price_plans_costs_when_calculated_cost_for_each_price_plan_given_readings_and_price_plans() {
-        List<ElectricityReading> readings = List.of(createReading(tenDaysAgo, 5.0), createReading(today, 15.0));
-        var smartMeter = new SmartMeter(WORST_PRICE_PLAN, readings);
-        smartMeterRepository.save(SMART_METER_ID, smartMeter);
-
-        var response = comparator.calculatedCostForEachPricePlan(SMART_METER_ID);
-
-        Map<String, Object> expected = Map.of(
-                "currentlyAssignedPricePlanId",
-                WORST_PLAN_ID,
-                PricePlanComparator.PRICE_PLAN_COMPARISONS_KEY,
-                Map.of(
-                        WORST_PLAN_ID, BigDecimal.valueOf(100.0),
-                        BEST_PLAN_ID, BigDecimal.valueOf(10.0),
-                        SECOND_BEST_PLAN_ID, BigDecimal.valueOf(20.0)));
-        assertThat(response).isEqualTo(expected);
-    }
-
-    @Test
-    public void should_throw_exception_when_calculated_cost_for_each_price_plan_given_no_readings() {
-        assertThatThrownBy(() -> comparator.calculatedCostForEachPricePlan("not-found"))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("args");
     }
 
     @Test
