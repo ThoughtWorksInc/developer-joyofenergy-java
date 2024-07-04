@@ -49,20 +49,20 @@ The project requires [Java 21](https://adoptium.net/) or higher.
 Compile the project, run the tests and creates an executable JAR file
 
 ```console
-$ ./gradlew build
+./gradlew build
 ```
 
 ### Run tests
 
 ```console
-$ ./gradlew test
+./gradlew test
 ```
 
 ### Sample run
 We provide a console application to manually test the implemented workflows with a set of sample data. 
 You can run it with the following command:
 ```console
-$ ./gradlew run
+./gradlew run
 ```
 
 ## API Documentation
