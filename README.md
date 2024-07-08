@@ -94,10 +94,10 @@ Example readings
 | Date (`GMT`)      | Epoch timestamp |   Reading (kWh) |
 |-------------------|----------------:|----------------:|
 | `2020-11-29 8:00` |      1606636800 |          0.0503 |
-| `2020-11-29 9:00` |      1606636860 |          0.0621 |
-| `2020-11-30 7:30` |      1606636920 |          0.0922 |
-| `2020-11-31 8:30` |      1606636980 |          0.1223 |
-| `2020-11-31 8:00` |      1606637040 |          0.1391 |
+| `2020-11-29 9:00` |      1606640400 |          0.0621 |
+| `2020-11-30 7:30` |      1606721400 |          0.0922 |
+| `2020-12-01 8:30` |      1606811400 |          0.1223 |
+| `2020-12-02 8:30` |      1606897800 |          0.1391 |
 
 Thee above table shows some readings sampled by a smart meter over multiple days. Note that since the smart 
 meter is reporting the total energy consumed up to that point in time, a reading's value will always be higher or the same as 
