@@ -12,6 +12,7 @@ import static tw.joi.energy.fixture.PricePlanFixture.WORST_PRICE_PLAN;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +27,8 @@ public class PricePlanComparatorTest {
     private static final String SMART_METER_ID = "smart-meter-id";
     private PricePlanComparator comparator;
     private SmartMeterRepository smartMeterRepository;
-    private final LocalDateTime today = LocalDateTime.now();
-    private final LocalDateTime tenDaysAgo = today.minusDays(10);
+    private final ZonedDateTime today = ZonedDateTime.now();
+    private final ZonedDateTime tenDaysAgo = today.minusDays(10);
 
     @BeforeEach
     public void setUp() {

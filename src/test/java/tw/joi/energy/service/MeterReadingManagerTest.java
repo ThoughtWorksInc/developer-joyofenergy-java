@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static tw.joi.energy.fixture.ElectricityReadingFixture.createReading;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +17,7 @@ import tw.joi.energy.repository.SmartMeterRepository;
 
 public class MeterReadingManagerTest {
 
+    private static final ZoneId GMT = ZoneId.of("GMT");
     private static final String SMART_METER_ID = "10101010";
     private final SmartMeterRepository smartMeterRepository = new SmartMeterRepository();
     private final MeterReadingManager meterReadingManager = new MeterReadingManager(smartMeterRepository);
@@ -54,7 +57,7 @@ public class MeterReadingManagerTest {
     @Test
     @DisplayName("storeReadings should succeed given non-empty list of readings")
     public void store_readings_should_succeed_given_meter_readings() {
-        var readingsToStore = List.of(createReading(LocalDate.now(), 1.0));
+        var readingsToStore = List.of(createReading(LocalDate.now(), GMT, 1.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, readingsToStore);
 
@@ -65,8 +68,8 @@ public class MeterReadingManagerTest {
     @Test
     @DisplayName("storeReadings should succeed when called multiple times")
     public void store_readings_should_succeed_given_multiple_batches_of_meter_readings() {
-        var meterReadings = List.of(createReading(LocalDate.now(), 1.0));
-        var otherMeterReadings = List.of(createReading(LocalDate.now(), 2.0));
+        var meterReadings = List.of(createReading(LocalDate.now(), GMT, 1.0));
+        var otherMeterReadings = List.of(createReading(LocalDate.now(), GMT, 2.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings(SMART_METER_ID, otherMeterReadings);
@@ -82,8 +85,8 @@ public class MeterReadingManagerTest {
     @Test
     @DisplayName("storeReadings should write supplied readings to correct meter")
     public void store_readings_should_store_to_correct_meter_given_multiple_meters_exist() {
-        var meterReadings = List.of(createReading(LocalDate.now(), 1.0));
-        var otherMeterReadings = List.of(createReading(LocalDate.now(), 2.0));
+        var meterReadings = List.of(createReading(ZonedDateTime.now(), 1.0));
+        var otherMeterReadings = List.of(createReading(ZonedDateTime.now(), 2.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings("00001", otherMeterReadings);
@@ -104,7 +107,7 @@ public class MeterReadingManagerTest {
     @DisplayName("readReadings should return previously supplied readings for a known meterId")
     public void read_readings_should_return_readings_given_readings_are_existent() {
         // given
-        var meterReadings = List.of(createReading(LocalDate.now(), 1.0));
+        var meterReadings = List.of(createReading(ZonedDateTime.now(), 1.0));
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         // expect
         assertThat(meterReadingManager.readReadings(SMART_METER_ID)).isEqualTo(meterReadings);
