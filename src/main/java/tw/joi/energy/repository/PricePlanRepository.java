@@ -5,10 +5,10 @@ import static java.util.stream.Collectors.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.*;
 import tw.joi.energy.domain.ElectricityReading;
 import tw.joi.energy.domain.PricePlan;
 import tw.joi.energy.domain.SmartMeter;
@@ -34,8 +34,8 @@ public class PricePlanRepository {
                 .max(comparing(ElectricityReading::time))
                 .get();
 
-        BigDecimal energyConsumed = latest.reading().subtract(oldest.reading());
-        return energyConsumed.multiply(pricePlan.getPrice(LocalDateTime.now()));
+        BigDecimal energyConsumed = latest.readingInKwH().subtract(oldest.readingInKwH());
+        return energyConsumed.multiply(pricePlan.getPrice(ZonedDateTime.now()));
     }
 
     public List<PricePlan> getAllPricePlans() {

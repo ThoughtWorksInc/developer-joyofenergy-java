@@ -14,7 +14,7 @@ public final class TestData {
     private static final PricePlan MOST_EVIL_PRICE_PLAN =
             new PricePlan("price-plan-0", "Dr Evil's Dark Energy", BigDecimal.TEN, emptyList());
     private static final PricePlan RENEWABLES_PRICE_PLAN =
-            new PricePlan("price-plan-1", "The Green Eco", BigDecimal.valueOf(2), null);
+            new PricePlan("price-plan-1", "The Green Eco", BigDecimal.valueOf(2), emptyList());
     private static final PricePlan STANDARD_PRICE_PLAN =
             new PricePlan("price-plan-2", "Power for Everyone", BigDecimal.ONE, emptyList());
 
