@@ -1,9 +1,9 @@
 package tw.joi.energy.fixture;
 
+import static java.util.Collections.emptySet;
+
 import java.math.BigDecimal;
 import tw.joi.energy.domain.PricePlan;
-
-import static java.util.Collections.emptySet;
 
 public class PricePlanFixture {
 
@@ -14,9 +14,7 @@ public class PricePlanFixture {
     public static final PricePlan DEFAULT_PRICE_PLAN =
             new PricePlan(SECOND_BEST_PLAN_ID, "energy-supplier", BigDecimal.TWO, emptySet());
 
-    public static final PricePlan WORST_PRICE_PLAN =
-            new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN, emptySet());
+    public static final PricePlan WORST_PRICE_PLAN = new PricePlan(WORST_PLAN_ID, null, BigDecimal.TEN, emptySet());
 
-    public static final PricePlan BEST_PRICE_PLAN =
-            new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE, emptySet());
+    public static final PricePlan BEST_PRICE_PLAN = new PricePlan(BEST_PLAN_ID, null, BigDecimal.ONE, emptySet());
 }

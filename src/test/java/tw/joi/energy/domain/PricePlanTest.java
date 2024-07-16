@@ -24,9 +24,9 @@ public class PricePlanTest {
     @Test
     @DisplayName("Get price should return price given non-peak date and time")
     public void get_price_should_return_the_base_price_given_an_ordinary_date_time() {
-        ZonedDateTime nonPeakDateTime = ZonedDateTime.of(LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0),
-            ZoneId.of("GMT"));
-        // the price plan has no peak days....
+        ZonedDateTime nonPeakDateTime =
+                ZonedDateTime.of(LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0), ZoneId.of("GMT"));
+        // the price plan has no peak days, so all times are non-peak
         PricePlan pricePlan = new PricePlan("test plan", "test supplier", BigDecimal.ONE, emptySet());
 
         BigDecimal price = pricePlan.getPrice(nonPeakDateTime);

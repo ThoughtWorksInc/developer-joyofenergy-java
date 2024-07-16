@@ -23,13 +23,29 @@ public final class TestData {
         var smartMeterRepository = new SmartMeterRepository();
         smartMeterRepository.save("smart-meter-0", new SmartMeter(MOST_EVIL_PRICE_PLAN, emptyList()));
         smartMeterRepository.save(
-                "smart-meter-1", new SmartMeter(RENEWABLES_PRICE_PLAN, ElectricityReadingsGenerator.generateElectricityReadingStream(7).toList()));
+                "smart-meter-1",
+                new SmartMeter(
+                        RENEWABLES_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(7)
+                                .toList()));
         smartMeterRepository.save(
-                "smart-meter-2", new SmartMeter(MOST_EVIL_PRICE_PLAN, ElectricityReadingsGenerator.generateElectricityReadingStream(20).toList()));
+                "smart-meter-2",
+                new SmartMeter(
+                        MOST_EVIL_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(20)
+                                .toList()));
         smartMeterRepository.save(
-                "smart-meter-3", new SmartMeter(STANDARD_PRICE_PLAN, ElectricityReadingsGenerator.generateElectricityReadingStream(12).toList()));
+                "smart-meter-3",
+                new SmartMeter(
+                        STANDARD_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(12)
+                                .toList()));
         smartMeterRepository.save(
-                "smart-meter-4", new SmartMeter(RENEWABLES_PRICE_PLAN, ElectricityReadingsGenerator.generateElectricityReadingStream(3).toList()));
+                "smart-meter-4",
+                new SmartMeter(
+                        RENEWABLES_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(3)
+                                .toList()));
         return smartMeterRepository;
     }
 
