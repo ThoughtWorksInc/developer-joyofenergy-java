@@ -25,7 +25,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("storeReadings should throw exception given a null meterId")
-    public void store_readings_should_throw_exception_given_meter_id_is_null() {
+    public void storeReadingsShouldThrowExceptionGivenNullMeterId() {
         assertThatThrownBy(() -> meterReadingManager.storeReadings(null, emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
@@ -33,7 +33,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("storeReadings should throw exception given meterId is empty string")
-    void store_readings_should_throw_exception_given_meter_id_is_empty() {
+    void storeReadingsShouldThrowExceptionGivenEmptyMeterId() {
         assertThatThrownBy(() -> meterReadingManager.storeReadings("", emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
@@ -41,7 +41,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("storeReadings should throw exception given readings is null")
-    void store_readings_should_throw_exception_given_readings_is_null() {
+    void storeReadingsShouldThrowExceptionGivenNullReadings() {
         assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("readings");
@@ -49,7 +49,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("storeReadings should throw exception given readings is emtpy list")
-    void store_readings_should_throw_exception_given_readings_is_empty() {
+    void storeReadingsShouldThrowExceptionGivenEmptyReadings() {
         assertThatThrownBy(() -> meterReadingManager.storeReadings(SMART_METER_ID, emptyList()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("readings");
@@ -57,7 +57,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("storeReadings should succeed given non-empty list of readings")
-    void store_readings_should_succeed_given_meter_readings() {
+    void storeReadingsShouldSucceedGivenNonEmptyReadings() {
         var readingsToStore = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, readingsToStore);
@@ -68,7 +68,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("storeReadings should succeed when called multiple times")
-    void store_readings_should_succeed_given_multiple_batches_of_meter_readings() {
+    void storeReadingsShouldSucceedWhenCalledMultipleTimes() {
         var meterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
         var otherMeterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 2.0));
 
@@ -85,7 +85,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("storeReadings should write supplied readings to correct meter")
-    void store_readings_should_store_to_correct_meter_given_multiple_meters_exist() {
+    void storeReadingsShouldWriteSuppliedReadingsToCorrectMeter() {
         var meterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
         var otherMeterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 2.0));
 
@@ -98,7 +98,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("readReadings should throw exception if supplied meterId is not persisted")
-    void read_readings_should_throw_exception_given_meter_id_is_not_persisted() {
+    void readReadingsShouldThrowExceptionIfSupplierNotPersisted() {
         assertThatThrownBy(() -> meterReadingManager.readReadings(SMART_METER_ID))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("smartMeterId");
@@ -106,7 +106,7 @@ class MeterReadingManagerTest {
 
     @Test
     @DisplayName("readReadings should return previously supplied readings for a known meterId")
-    void read_readings_should_return_readings_given_readings_are_existent() {
+    void readReadingsShouldReturnPreviouslySuppliedReadings() {
         // given
         var meterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);

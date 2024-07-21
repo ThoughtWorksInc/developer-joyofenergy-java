@@ -14,7 +14,7 @@ public class PricePlanTest {
 
     @Test
     @DisplayName("Get energy supplier should return supplier if not null")
-    public void get_energy_supplier_should_return_the_energy_supplier_given_supplier_is_existent() {
+    public void getSupplierShouldReturnSupplierIfNotNull() {
         PricePlan pricePlan = new PricePlan("Test Plan Name", "Energy Supplier Name", BigDecimal.ONE);
 
         assertThat(pricePlan.getEnergySupplier()).isEqualTo("Energy Supplier Name");
@@ -22,7 +22,7 @@ public class PricePlanTest {
 
     @Test
     @DisplayName("Get price should return price given non-peak date and time")
-    public void get_price_should_return_the_base_price_given_an_ordinary_date_time() {
+    public void getPriceShouldReturnPriceGivenNonPeakDateAndTime() {
         ZonedDateTime nonPeakDateTime =
                 ZonedDateTime.of(LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0), ZoneId.of("GMT"));
         // the price plan has no peak days, so all times are non-peak
@@ -34,8 +34,8 @@ public class PricePlanTest {
     }
 
     @Test
-    @DisplayName("Get unit rate should return unit rate if no null")
-    public void get_unit_rate_should_return_unit_rate_given_unit_rate_is_present() {
+    @DisplayName("Get unit rate should return unit rate if not null")
+    public void getUnitRateShouldReturnUnitRateIfNotNull() {
         PricePlan pricePlan = new PricePlan("test-price-plan", "test-energy-supplier", BigDecimal.TWO);
 
         BigDecimal rate = pricePlan.getUnitRate();

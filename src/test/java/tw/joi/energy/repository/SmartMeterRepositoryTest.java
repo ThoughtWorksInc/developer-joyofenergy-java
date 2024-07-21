@@ -11,7 +11,7 @@ class SmartMeterRepositoryTest {
 
     @Test
     @DisplayName("findById should return empty option when searching for non-existent id")
-    void should_return_empty_smart_meter_when_find_by_id_given_a_non_existent_id() {
+    void findById_shouldReturnEmptyOptionWhenSearchingForNonExistentId() {
         var repository = new SmartMeterRepository();
 
         assertThat(repository.findById("non-existent")).isEmpty();
@@ -19,7 +19,7 @@ class SmartMeterRepositoryTest {
 
     @Test
     @DisplayName("findById should return appropriate smart meter if parameter exists in repository")
-    void should_return_smart_meters_when_find_by_id_given_existent_smart_meter_ids() {
+    void findById_shouldReturnSmartMeterIfParameterExistsInRepository() {
         var repository = new SmartMeterRepository();
         SmartMeter smartMeter0 = new SmartMeter(null, List.of());
         SmartMeter smartMeter1 = new SmartMeter(null, List.of());

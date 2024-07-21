@@ -46,7 +46,7 @@ class PricePlanComparatorTest {
 
     @Test
     @DisplayName("recommend should return costs for all plans when no limit specified")
-    void recommend_should_return_all_costs_given_no_limit() {
+    void recommendShouldReturnCostsForAllPlansWhenNoLimitSpecified() {
         var readings = List.of(new ElectricityReading(tenDaysAgo, 3.0), new ElectricityReading(today, 35.0));
         var smartMeter = new SmartMeter(WORST_PRICE_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
@@ -62,7 +62,7 @@ class PricePlanComparatorTest {
 
     @Test
     @DisplayName("recommend should return top two cheapest costings if limit of 2 supplied ")
-    void recommend_should_return_top_2_cheapest_costs_given_limit_is_2() {
+    void recommendShouldReturnTopTwoCheapestCostingsIfLimitOf2Supplied() {
         var readings = List.of(new ElectricityReading(tenDaysAgo, 5.0), new ElectricityReading(today, 20.0));
         var smartMeter = new SmartMeter(WORST_PRICE_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
@@ -77,7 +77,7 @@ class PricePlanComparatorTest {
 
     @Test
     @DisplayName("recommend should return all costs if limit is larger than sum of known price plans")
-    void recommend_should_return_all_costs_given_limit_is_bigger_than_count_of_price_plans() {
+    void recommendShouldReturnAllCostsIfLimitIsLargerThanSumOfKnownPricePlans() {
         var readings = List.of(new ElectricityReading(tenDaysAgo, 3.0), new ElectricityReading(today, 25.0));
         var smartMeter = new SmartMeter(WORST_PRICE_PLAN, readings);
         smartMeterRepository.save(SMART_METER_ID, smartMeter);
@@ -93,7 +93,7 @@ class PricePlanComparatorTest {
 
     @Test
     @DisplayName("recommend should throw exception given a missing smartId")
-    void recommend_should_throw_exception_given_smart_meter_is_not_existent() {
+    void recommendShouldThrowExceptionGivenMissingSmartId() {
         assertThatThrownBy(() -> comparator.recommendCheapestPricePlans("not_existent_id", null))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("missing args");

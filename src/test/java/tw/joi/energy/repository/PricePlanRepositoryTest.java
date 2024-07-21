@@ -10,7 +10,7 @@ class PricePlanRepositoryTest {
 
     @Test
     @DisplayName("Should return empty list of plans if none available")
-    void should_return_empty_list_when_get_all_price_plans_given_no_price_plans_available() {
+    void shouldReturnEmptyListOfPlansIfNoneAvailable() {
         var repository = new PricePlanRepository(emptyList());
 
         var allPlans = repository.getAllPricePlans();

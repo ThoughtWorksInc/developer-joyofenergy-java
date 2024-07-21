@@ -10,7 +10,7 @@ class SmartMeterTest {
 
     @Test
     @DisplayName("Price plan should be null if none has been supplied")
-    void price_plan_id_should_be_null_given_no_price_plan_has_been_provided() {
+    void pricePlanShouldBeNullIfNoneHasBeenSupplied() {
         var smartMeter = new SmartMeter(null, emptyList());
 
         var pricePlanId = smartMeter.getPricePlanId();

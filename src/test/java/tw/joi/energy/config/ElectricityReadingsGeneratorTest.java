@@ -17,19 +17,19 @@ class ElectricityReadingsGeneratorTest {
 
     @Test
     @DisplayName("Stream for one day should have 25 entries")
-    void streamShouldHave25EntriesForOneDay() {
+    void streamForOneDayShouldHave25Entries() {
         assertThat(generateElectricityReadingStream(1)).hasSize(25);
     }
 
     @Test
     @DisplayName("Stream for two days should have 49 entries")
-    void streamShouldHave49EntriesForTwoDays() {
+    void streamForTwoDaysShouldHave49Entries() {
         assertThat(generateElectricityReadingStream(2).count()).isEqualTo(49);
     }
 
     @Test
     @DisplayName("Stream for one day should end 24 hours after initial entry")
-    void streamShouldHave24HoursAfterInitialEntry() {
+    void streamForOneDayShouldHave24HoursAfterInitialEntry() {
         var streamAsList = generateElectricityReadingStream(1).toList();
         var firstEntry = streamAsList.getFirst();
         var lastEntry = streamAsList.getLast();
@@ -53,8 +53,8 @@ class ElectricityReadingsGeneratorTest {
     }
 
     @Test
-    @DisplayName("Stream entries should have an energy consumption in the expected reange")
-    void streamEntriesShouldHaveAnIncreasingEnergyConsumption() {
+    @DisplayName("Stream entries should have an energy consumption in the expected range")
+    void streamEntriesShouldHaveAnIncreasingEnergyConsumptionInExpectedRange() {
         var min = BigDecimal.valueOf(MIN_HOURLY_USAGE);
         var max = BigDecimal.valueOf(MAX_HOURLY_USAGE);
 
