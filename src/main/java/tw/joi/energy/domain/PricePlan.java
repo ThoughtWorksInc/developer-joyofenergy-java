@@ -22,7 +22,10 @@ public class PricePlan {
     }
 
     public PricePlan(
-        String planName, String energySupplier, BigDecimal unitRate, Map<DayOfWeek, BigDecimal> peakTimeMultipliers) {
+            String planName,
+            String energySupplier,
+            BigDecimal unitRate,
+            Map<DayOfWeek, BigDecimal> peakTimeMultipliers) {
         this.planName = planName;
         this.energySupplier = energySupplier;
         this.unitRate = unitRate;

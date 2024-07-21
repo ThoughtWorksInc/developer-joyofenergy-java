@@ -1,7 +1,6 @@
 package tw.joi.energy.config;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -31,13 +31,11 @@ public class ElectricityReadingsGenerator {
         var readingRandomiser = new Random();
         var seed = new ElectricityReading(now, initialReading);
         var lastTimeToBeSupplied = now.plus(days * 24L, ChronoUnit.HOURS);
-        return Stream.iterate(
-                seed, er -> !er.time().isAfter(lastTimeToBeSupplied), er -> {
-                    var hoursWorthOfEnergy =
-                            BigDecimal.valueOf(readingRandomiser.nextDouble(MIN_HOURLY_USAGE, MAX_HOURLY_USAGE));
-                    return new ElectricityReading(
-                            er.time().plus(1, ChronoUnit.HOURS),
-                            er.readingInKwH().add(hoursWorthOfEnergy));
-                });
+        return Stream.iterate(seed, er -> !er.time().isAfter(lastTimeToBeSupplied), er -> {
+            var hoursWorthOfEnergy =
+                    BigDecimal.valueOf(readingRandomiser.nextDouble(MIN_HOURLY_USAGE, MAX_HOURLY_USAGE));
+            return new ElectricityReading(
+                    er.time().plus(1, ChronoUnit.HOURS), er.readingInKwH().add(hoursWorthOfEnergy));
+        });
     }
 }
