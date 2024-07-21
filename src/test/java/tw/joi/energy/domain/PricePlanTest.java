@@ -31,7 +31,7 @@ public class PricePlanTest {
 
         BigDecimal price = pricePlan.getPrice(nonPeakDateTime);
 
-        assertThat(price).isEqualTo(BigDecimal.ONE);
+        assertThat(price).isEqualByComparingTo(BigDecimal.ONE);
     }
 
     @Test
@@ -41,6 +41,6 @@ public class PricePlanTest {
 
         BigDecimal rate = pricePlan.getUnitRate();
 
-        assertThat(rate).isEqualTo(BigDecimal.TWO);
+        assertThat(rate).isEqualByComparingTo(BigDecimal.TWO);
     }
 }
