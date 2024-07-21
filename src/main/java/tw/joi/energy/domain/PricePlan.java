@@ -3,9 +3,9 @@ package tw.joi.energy.domain;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PricePlan {
 
@@ -14,13 +14,19 @@ public class PricePlan {
     private final BigDecimal unitRate; // unit price per kWh
     private final Map<DayOfWeek, BigDecimal> peakTimeMultipliers;
 
-    public PricePlan(
-            String planName, String energySupplier, BigDecimal unitRate, Set<PeakTimeMultiplier> peakTimeMultipliers) {
+    public PricePlan(String planName, String energySupplier, BigDecimal unitRate) {
         this.planName = planName;
         this.energySupplier = energySupplier;
         this.unitRate = unitRate;
-        this.peakTimeMultipliers = peakTimeMultipliers.stream()
-                .collect(Collectors.toUnmodifiableMap(PeakTimeMultiplier::dayOfWeek, PeakTimeMultiplier::multiplier));
+        this.peakTimeMultipliers = Collections.emptyMap();
+    }
+
+    public PricePlan(
+        String planName, String energySupplier, BigDecimal unitRate, Map<DayOfWeek, BigDecimal> peakTimeMultipliers) {
+        this.planName = planName;
+        this.energySupplier = energySupplier;
+        this.unitRate = unitRate;
+        this.peakTimeMultipliers = Collections.unmodifiableMap(new HashMap<>(peakTimeMultipliers));
     }
 
     public String getEnergySupplier() {

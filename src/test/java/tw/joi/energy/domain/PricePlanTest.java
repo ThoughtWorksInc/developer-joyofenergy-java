@@ -1,6 +1,5 @@
 package tw.joi.energy.domain;
 
-import static java.util.Collections.emptySet;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.math.BigDecimal;
@@ -16,7 +15,7 @@ public class PricePlanTest {
     @Test
     @DisplayName("Get energy supplier should return supplier if not null")
     public void get_energy_supplier_should_return_the_energy_supplier_given_supplier_is_existent() {
-        PricePlan pricePlan = new PricePlan("Test Plan Name", "Energy Supplier Name", BigDecimal.ONE, emptySet());
+        PricePlan pricePlan = new PricePlan("Test Plan Name", "Energy Supplier Name", BigDecimal.ONE);
 
         assertThat(pricePlan.getEnergySupplier()).isEqualTo("Energy Supplier Name");
     }
@@ -27,7 +26,7 @@ public class PricePlanTest {
         ZonedDateTime nonPeakDateTime =
                 ZonedDateTime.of(LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0), ZoneId.of("GMT"));
         // the price plan has no peak days, so all times are non-peak
-        PricePlan pricePlan = new PricePlan("test plan", "test supplier", BigDecimal.ONE, emptySet());
+        PricePlan pricePlan = new PricePlan("test plan", "test supplier", BigDecimal.ONE);
 
         BigDecimal price = pricePlan.getPrice(nonPeakDateTime);
 
@@ -37,7 +36,7 @@ public class PricePlanTest {
     @Test
     @DisplayName("Get unit rate should return unit rate if no null")
     public void get_unit_rate_should_return_unit_rate_given_unit_rate_is_present() {
-        PricePlan pricePlan = new PricePlan("test-price-plan", "test-energy-supplier", BigDecimal.TWO, emptySet());
+        PricePlan pricePlan = new PricePlan("test-price-plan", "test-energy-supplier", BigDecimal.TWO);
 
         BigDecimal rate = pricePlan.getUnitRate();
 
