@@ -19,7 +19,7 @@ class MeterReadingManagerTest {
     private static final ZoneId GMT = ZoneId.of("GMT");
     private static final String SMART_METER_ID = "10101010";
     private static final long ARBITRARY_TIME_STAMP = 1721124813L;
-    private static final Clock ARBITRARY_FIXED_CLOCK = Clock.fixed(Instant.ofEpochSecond(ARBITRARY_TIME_STAMP), GMT);
+    private static final Clock FIXED_CLOCK = Clock.fixed(Instant.ofEpochSecond(ARBITRARY_TIME_STAMP), GMT);
     private final SmartMeterRepository smartMeterRepository = new SmartMeterRepository();
     private final MeterReadingManager meterReadingManager = new MeterReadingManager(smartMeterRepository);
 
@@ -58,7 +58,7 @@ class MeterReadingManagerTest {
     @Test
     @DisplayName("storeReadings should succeed given non-empty list of readings")
     void store_readings_should_succeed_given_meter_readings() {
-        var readingsToStore = List.of(new ElectricityReading(ARBITRARY_FIXED_CLOCK, 1.0));
+        var readingsToStore = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, readingsToStore);
 
@@ -69,8 +69,8 @@ class MeterReadingManagerTest {
     @Test
     @DisplayName("storeReadings should succeed when called multiple times")
     void store_readings_should_succeed_given_multiple_batches_of_meter_readings() {
-        var meterReadings = List.of(new ElectricityReading(ARBITRARY_FIXED_CLOCK, 1.0));
-        var otherMeterReadings = List.of(new ElectricityReading(ARBITRARY_FIXED_CLOCK, 2.0));
+        var meterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
+        var otherMeterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 2.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings(SMART_METER_ID, otherMeterReadings);
@@ -86,8 +86,8 @@ class MeterReadingManagerTest {
     @Test
     @DisplayName("storeReadings should write supplied readings to correct meter")
     void store_readings_should_store_to_correct_meter_given_multiple_meters_exist() {
-        var meterReadings = List.of(new ElectricityReading(ARBITRARY_FIXED_CLOCK, 1.0));
-        var otherMeterReadings = List.of(new ElectricityReading(ARBITRARY_FIXED_CLOCK, 2.0));
+        var meterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
+        var otherMeterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 2.0));
 
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         meterReadingManager.storeReadings("00001", otherMeterReadings);
@@ -108,7 +108,7 @@ class MeterReadingManagerTest {
     @DisplayName("readReadings should return previously supplied readings for a known meterId")
     void read_readings_should_return_readings_given_readings_are_existent() {
         // given
-        var meterReadings = List.of(new ElectricityReading(ARBITRARY_FIXED_CLOCK, 1.0));
+        var meterReadings = List.of(new ElectricityReading(FIXED_CLOCK, 1.0));
         meterReadingManager.storeReadings(SMART_METER_ID, meterReadings);
         // expect
         assertThat(meterReadingManager.readReadings(SMART_METER_ID)).isEqualTo(meterReadings);
