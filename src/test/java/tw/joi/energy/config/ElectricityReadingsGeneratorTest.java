@@ -18,7 +18,7 @@ class ElectricityReadingsGeneratorTest {
     @Test
     @DisplayName("Stream for one day should have 25 entries")
     void streamShouldHave25EntriesForOneDay() {
-        assertThat(generateElectricityReadingStream(1).count()).isEqualTo(25);
+        assertThat(generateElectricityReadingStream(1)).hasSize(25);
     }
 
     @Test
