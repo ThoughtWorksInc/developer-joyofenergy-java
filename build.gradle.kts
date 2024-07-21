@@ -29,7 +29,7 @@ application {
     mainClass = "tw.joi.energy.App"
 }
 
-tasks.withType<JavaCompile>() {
+tasks.withType<JavaCompile> {
     this.options.isDeprecation = true
 }
 

@@ -16,7 +16,7 @@ as well as the logic to recommend the cheapest price plan for a particular house
 
 >Unfortunately, as the codebase has evolved, it has gathered tech debt in the form of a number of code smells and some 
 questionable design decisions. Our goal for the upcoming exercise would be to deliver value by implementing a new 
-feature using _Test Driven Development_ (TDD), while refactoring away the code smells we see. 
+feature using _[Test Driven Development](https://martinfowler.com/bliki/TestDrivenDevelopment.html)_ (TDD), while refactoring away the code smells we see. 
 > 
 >In preparation for this, please take some time to go through the code and identify any improvements, big or small, 
 that would improve its maintainability, testability, and design.
@@ -46,7 +46,9 @@ The project requires [Java 21](https://adoptium.net/) or higher.
 
 ## Useful commands
 
-Compile the project, run the tests and creates an executable JAR file
+### Build the project
+
+Compile the project, run the tests and creates an executable JAR file:
 
 ```console
 ./gradlew build
@@ -67,11 +69,10 @@ You can run it with the following command:
 
 ## API Documentation
 
-The codebase contains two service classes, _MeterReadingManager_ and _PricePlanComparator_, that serve as entry points to
-the implemented features.
+The codebase contains two service classes, `MeterReadingManager` and `PricePlanComparator` that serve as entry points to the implemented features.
 
 ### MeterReadingManager
-Provides methods to store and fetch the energy consumption readings from a given Smart Meter
+Provides methods to store and fetch the energy consumption readings from a given Smart Meter.
 
 > #### _public void_ storeReadings(_String smartMeterId, List<ElectricityReading> electricityReadings_)
 Stores the provided _ElectricityReading_ collection in the indicated _SmartMeter_. If no 
@@ -91,13 +92,13 @@ An _ElectricityReading_ record consists of the following fields:
 
 Example readings
 
-| Date (`GMT`)      | Epoch timestamp | Reading (kWh) |
-|-------------------|----------------:|--------------:|
-| `2020-11-29 8:00` |      1606636800 |        600.05 |
-| `2020-11-29 9:00` |      1606640400 |        602.06 |
-| `2020-11-30 7:30` |      1606721400 |        610.09 |
-| `2020-12-01 8:30` |      1606811400 |        627.12 |
-| `2020-12-02 8:30` |      1606897800 |        635.14 |
+| Date (`GMT`)      | Epoch timestamp (seconds) | Reading (kWh) |
+|-------------------|--------------------------:|--------------:|
+| `2020-11-29 8:00` |                1606636800 |        600.05 |
+| `2020-11-29 9:00` |                1606640400 |        602.06 |
+| `2020-11-30 7:30` |                1606721400 |        610.09 |
+| `2020-12-01 8:30` |                1606811400 |        627.12 |
+| `2020-12-02 8:30` |                1606897800 |        635.14 |
 
 Thee above table shows some readings sampled by a smart meter over multiple days. Note that since the smart 
 meter is reporting the total energy consumed up to that point in time, a reading's value will always be higher or the same as 

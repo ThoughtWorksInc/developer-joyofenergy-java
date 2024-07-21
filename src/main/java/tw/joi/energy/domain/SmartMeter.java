@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SmartMeter {
+
     private final PricePlan pricePlan;
     private final List<ElectricityReading> electricityReadings;
 

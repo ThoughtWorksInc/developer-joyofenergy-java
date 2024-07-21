@@ -25,7 +25,8 @@ public class App {
         printAllAvailablePricePlans(pricePlanRepository);
 
         printSmartMeterInformation(smartMeterRepository, "Before storing readings...");
-        var readingsToSave = ElectricityReadingsGenerator.generate(3);
+        var readingsToSave =
+                ElectricityReadingsGenerator.generateElectricityReadingStream(3).toList();
         meterReadingManager.storeReadings(TEST_SMART_METER, readingsToSave);
         printSmartMeterInformation(smartMeterRepository, "After storing readings...");
 

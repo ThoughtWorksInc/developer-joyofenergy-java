@@ -12,23 +12,39 @@ import tw.joi.energy.repository.SmartMeterRepository;
 public final class TestData {
 
     private static final PricePlan MOST_EVIL_PRICE_PLAN =
-            new PricePlan("price-plan-0", "Dr Evil's Dark Energy", BigDecimal.TEN, emptyList());
+            new PricePlan("price-plan-0", "Dr Evil's Dark Energy", BigDecimal.TEN);
     private static final PricePlan RENEWABLES_PRICE_PLAN =
-            new PricePlan("price-plan-1", "The Green Eco", BigDecimal.valueOf(2), null);
+            new PricePlan("price-plan-1", "The Green Eco", BigDecimal.valueOf(2));
     private static final PricePlan STANDARD_PRICE_PLAN =
-            new PricePlan("price-plan-2", "Power for Everyone", BigDecimal.ONE, emptyList());
+            new PricePlan("price-plan-2", "Power for Everyone", BigDecimal.ONE);
 
     public static SmartMeterRepository smartMeterRepository() {
         var smartMeterRepository = new SmartMeterRepository();
         smartMeterRepository.save("smart-meter-0", new SmartMeter(MOST_EVIL_PRICE_PLAN, emptyList()));
         smartMeterRepository.save(
-                "smart-meter-1", new SmartMeter(RENEWABLES_PRICE_PLAN, ElectricityReadingsGenerator.generate(7)));
+                "smart-meter-1",
+                new SmartMeter(
+                        RENEWABLES_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(7)
+                                .toList()));
         smartMeterRepository.save(
-                "smart-meter-2", new SmartMeter(MOST_EVIL_PRICE_PLAN, ElectricityReadingsGenerator.generate(20)));
+                "smart-meter-2",
+                new SmartMeter(
+                        MOST_EVIL_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(20)
+                                .toList()));
         smartMeterRepository.save(
-                "smart-meter-3", new SmartMeter(STANDARD_PRICE_PLAN, ElectricityReadingsGenerator.generate(12)));
+                "smart-meter-3",
+                new SmartMeter(
+                        STANDARD_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(12)
+                                .toList()));
         smartMeterRepository.save(
-                "smart-meter-4", new SmartMeter(RENEWABLES_PRICE_PLAN, ElectricityReadingsGenerator.generate(3)));
+                "smart-meter-4",
+                new SmartMeter(
+                        RENEWABLES_PRICE_PLAN,
+                        ElectricityReadingsGenerator.generateElectricityReadingStream(3)
+                                .toList()));
         return smartMeterRepository;
     }
 

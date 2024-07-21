@@ -1,42 +1,45 @@
 package tw.joi.energy.domain;
 
-import org.assertj.core.data.Percentage;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class PricePlanTest {
 
     @Test
-    public void get_energy_supplier_should_return_the_energy_supplier_given_supplier_is_existent() {
-        PricePlan pricePlan = new PricePlan(null, "Energy Supplier Name", null, null);
+    @DisplayName("Get energy supplier should return supplier if not null")
+    public void getSupplierShouldReturnSupplierIfNotNull() {
+        PricePlan pricePlan = new PricePlan("Test Plan Name", "Energy Supplier Name", BigDecimal.ONE);
 
         assertThat(pricePlan.getEnergySupplier()).isEqualTo("Energy Supplier Name");
     }
 
     @Test
-    public void get_price_should_return_the_base_price_given_an_ordinary_date_time() throws Exception {
-        LocalDateTime normalDateTime = LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0);
-        PricePlan pricePlan = new PricePlan(null, null, BigDecimal.ONE, emptyList());
+    @DisplayName("Get price should return price given non-peak date and time")
+    public void getPriceShouldReturnPriceGivenNonPeakDateAndTime() {
+        ZonedDateTime nonPeakDateTime =
+                ZonedDateTime.of(LocalDateTime.of(2017, Month.AUGUST, 31, 12, 0, 0), ZoneId.of("GMT"));
+        // the price plan has no peak days, so all times are non-peak
+        PricePlan pricePlan = new PricePlan("test plan", "test supplier", BigDecimal.ONE);
 
-        BigDecimal price = pricePlan.getPrice(normalDateTime);
+        BigDecimal price = pricePlan.getPrice(nonPeakDateTime);
 
-        assertThat(price).isCloseTo(BigDecimal.ONE, Percentage.withPercentage(1));
+        assertThat(price).isEqualByComparingTo(BigDecimal.ONE);
     }
 
     @Test
-    public void get_unit_rate_should_return_unit_rate_given_unit_rate_is_present() {
-        PricePlan pricePlan = new PricePlan(null, null, BigDecimal.TWO, null);
-        pricePlan.setPlanName("test-price-plan");
-        pricePlan.setEnergySupplier("test-energy-supplier");
+    @DisplayName("Get unit rate should return unit rate if not null")
+    public void getUnitRateShouldReturnUnitRateIfNotNull() {
+        PricePlan pricePlan = new PricePlan("test-price-plan", "test-energy-supplier", BigDecimal.TWO);
 
         BigDecimal rate = pricePlan.getUnitRate();
 
-        assertThat(rate).isEqualTo(BigDecimal.TWO);
+        assertThat(rate).isEqualByComparingTo(BigDecimal.TWO);
     }
 }
